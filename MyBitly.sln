@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyBitly.Front", "MyBitly.Front\MyBitly.Front.csproj", "{77D36964-9920-405D-9445-C28138BA76B1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyBitly.BLL", "MyBitly.BLL\MyBitly.BLL.csproj", "{ADD7FB4D-9397-4E17-98BC-C0E8385E8D88}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{77D36964-9920-405D-9445-C28138BA76B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77D36964-9920-405D-9445-C28138BA76B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77D36964-9920-405D-9445-C28138BA76B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77D36964-9920-405D-9445-C28138BA76B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ADD7FB4D-9397-4E17-98BC-C0E8385E8D88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ADD7FB4D-9397-4E17-98BC-C0E8385E8D88}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ADD7FB4D-9397-4E17-98BC-C0E8385E8D88}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ADD7FB4D-9397-4E17-98BC-C0E8385E8D88}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

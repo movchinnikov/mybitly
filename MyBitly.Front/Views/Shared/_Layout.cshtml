@@ -1,0 +1,23 @@
+﻿<!DOCTYPE html>
+<html data-ng-app="app">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <link rel="stylesheet" href="@Url.Content("~/Content/css/bootstrap.min.css")">
+    <link rel="stylesheet" href="@Url.Content("~/Content/css/mybittly.css")">
+
+    <script type="text/javascript" src="@Url.Content("~/Content/js/vendor/angular.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Content/js/vendor/angular-route.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Content/js/app/app.js")"></script>
+</head>
+<body>
+<div class="container">
+    @RenderBody()
+    <footer class="footer">
+        <p>Сокращатель ссылок. Тестовое задание</p>
+    </footer>
+</div>
+
+</body>
+</html>
