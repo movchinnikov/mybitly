@@ -1,0 +1,23 @@
+﻿<div class="jumbotron">
+    <h1>СОКРАЩАЙ. ДЕЛИСЬ. ОЦЕНИВАЙ.</h1>
+
+    <form name="shortenForm" novalidate data-ng-submit="shortenForm.$valid && shorten()">
+        <div class="form-group">
+            <div class="input-group input-group-lg">
+                <input
+                    name="longUrl"
+                    type="text"
+                    class="form-control"
+                    data-ng-model="longUrl"
+                    data-ng-required="true"
+                    placeholder="Вставьте ссылку, а мы ее сократим">
+                <span class="input-group-btn">
+                    <button class="btn btn-success" type="submit">Сократить!</button>
+                </span>
+            </div>
+        </div>
+        <div data-ng-if="(shortenForm.longUrl.$dirty || shortenForm.$submitted) && shortenForm.longUrl.$invalid">
+            <span class="has-error help-block" data-ng-if="shortenForm.longUrl.$error.required">Введите вашу ссылку</span>
+        </div>
+    </form>
+</div>

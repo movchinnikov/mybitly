@@ -115,6 +115,10 @@
     <Content Include="Content\css\bootstrap.min.css" />
     <Content Include="Content\css\mybittly.css" />
     <Content Include="Content\js\app\app.js" />
+    <Content Include="Content\js\app\home\controllers\homeController.js" />
+    <Content Include="Content\js\app\home\factories\homeFactory.js" />
+    <Content Include="Content\js\app\home\route.js" />
+    <Content Include="Content\js\app\home\templates\index.html" />
     <Content Include="Content\js\vendor\angular-route.js" />
     <Content Include="Content\js\vendor\angular.js" />
     <Content Include="favicon.ico" />
