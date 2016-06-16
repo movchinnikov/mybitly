@@ -6,7 +6,7 @@
     using Base;
     using Castle.Windsor;
     using Models;
-    using Services.Url;
+    using Services;
 
     public class UrlController : BaseApiController
     {
@@ -19,7 +19,7 @@
         }
 
         [HttpPost]
-        public HttpResponseMessage Shorten([FromBody]string longUrl)
+        public HttpResponseMessage Shorten(string longUrl)
         {
             try
             {

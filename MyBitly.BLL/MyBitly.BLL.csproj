@@ -67,6 +67,7 @@
     <Compile Include="Controllers\Api\UrlController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="ExceptionHandling\ApiExceptionFilterAttribute.cs" />
+    <Compile Include="Exceptions\MyBitlyException.cs" />
     <Compile Include="Models\ShortenResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\MyBitleResources.Designer.cs">
@@ -75,6 +76,7 @@
       <DependentUpon>MyBitleResources.resx</DependentUpon>
     </Compile>
     <Compile Include="Services\Url\IUrlService.cs" />
+    <Compile Include="Services\Url\UrlService.cs" />
     <Compile Include="Utils\BllInstaller.cs" />
     <Compile Include="Utils\CustomControllerFactory.cs" />
     <Compile Include="Utils\CustomDependencyResolver.cs" />
@@ -84,6 +86,7 @@
     <EmbeddedResource Include="Resources\MyBitleResources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>MyBitleResources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

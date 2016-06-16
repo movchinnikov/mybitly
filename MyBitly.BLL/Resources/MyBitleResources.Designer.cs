@@ -61,11 +61,38 @@ namespace MyBitly.BLL.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to EMPTY_ARG_URL.
+        /// </summary>
+        public static string EMPTY_ARG_URL {
+            get {
+                return ResourceManager.GetString("EMPTY_ARG_URL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to INVALID_ARG_URL.
+        /// </summary>
+        public static string INVALID_ARG_URL {
+            get {
+                return ResourceManager.GetString("INVALID_ARG_URL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Не удалось сократить ссылку..
         /// </summary>
         public static string ShortenUrlException {
             get {
                 return ResourceManager.GetString("ShortenUrlException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Укажите ссылку..
+        /// </summary>
+        public static string UrlIsNullOrEmptyException {
+            get {
+                return ResourceManager.GetString("UrlIsNullOrEmptyException", resourceCulture);
             }
         }
     }

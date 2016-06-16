@@ -15,6 +15,12 @@
     {
         [JsonProperty(PropertyName = "message")]
         public string Message { get; set; }
+
+        [JsonProperty(PropertyName = "status_txt")]
+        public string Code { get; set; }
+
+        [JsonProperty(PropertyName = "status_code")]
+        public int StatusCode { get; set; }
     }
 
     public class Response

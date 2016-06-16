@@ -4,6 +4,7 @@
     using System.Net.Http;
     using System.Net.Http.Formatting;
     using System.Web.Http.Filters;
+    using Exceptions;
     using Models;
 
     public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
@@ -12,6 +13,14 @@
         {
             var e = actionExecutedContext.Exception;
             var response = new ExceptionResponse {Message = e.Message};
+
+            var exception = e as MyBitlyException;
+            if (exception != null)
+            {
+                response.Code = exception.Code;
+                response.StatusCode = exception.StatusCode;
+            }
+
             actionExecutedContext.Response =
                 new HttpResponseMessage(HttpStatusCode.InternalServerError)
                 {
