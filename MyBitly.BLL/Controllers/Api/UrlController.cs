@@ -1,34 +1,40 @@
 ﻿namespace MyBitly.BLL.Controllers.Api
 {
-    using System;
-    using System.Net;
     using System.Net.Http;
     using System.Net.Http.Formatting;
     using System.Web.Http;
+    using Base;
+    using Castle.Windsor;
+    using Models;
+    using Services.Url;
 
-    public class UrlController : ApiController
+    public class UrlController : BaseApiController
     {
-        [HttpPost]
-        public HttpResponseMessage Shorten(string longUrl)
+        private readonly IUrlService _urlService;
+
+        public UrlController(IWindsorContainer container, IUrlService urlService)
+            : base(container)
         {
-            Uri uriResult;
-            var result = Uri.TryCreate(longUrl, UriKind.Absolute, out uriResult);
-            if (result != false)
+            this._urlService = urlService;
+        }
+
+        [HttpPost]
+        public HttpResponseMessage Shorten([FromBody]string longUrl)
+        {
+            try
+            {
+                var response = this._urlService.Shorten(longUrl);
                 return new HttpResponseMessage()
                 {
                     Content =
-                        new ObjectContent<Response>(new Response {Data = new {url = "http://bit.ly/ze6poY"}},
+                        new ObjectContent<Response>(new Response { Data = response },
                             new JsonMediaTypeFormatter(), "application/json")
                 };
-            else
+            }
+            finally
             {
-                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.InternalServerError) { Content = new StringContent("Не удалось сократить эту ссылку") });
+                if (this._urlService != null) this.Container.Release(this._urlService);
             }
         }
-    }
-
-    public class Response
-    {
-        public object Data { get; set; }
     }
 }

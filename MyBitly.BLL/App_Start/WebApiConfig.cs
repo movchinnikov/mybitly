@@ -1,6 +1,7 @@
 ﻿namespace MyBitly.BLL
 {
     using System.Web.Http;
+    using ExceptionHandling;
 
     public static class WebApiConfig
     {
@@ -10,6 +11,8 @@
                 "api/{action}",
                 new { controller = "url" },
                 new {action = @"[a-zA-Z]+"});
+
+            config.Filters.Add(new ApiExceptionFilterAttribute());
         }
     }
 }
