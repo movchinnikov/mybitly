@@ -70,6 +70,15 @@ namespace MyBitly.BLL.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to EXCEPTION_STORAGE_URL.
+        /// </summary>
+        public static string EXCEPTION_STORAGE_URL {
+            get {
+                return ResourceManager.GetString("EXCEPTION_STORAGE_URL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to INVALID_ARG_URL.
         /// </summary>
         public static string INVALID_ARG_URL {

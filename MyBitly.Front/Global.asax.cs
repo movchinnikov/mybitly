@@ -8,6 +8,7 @@
     using BLL.Utils;
     using Castle.MicroKernel.Registration;
     using Castle.Windsor;
+    using DAL.Utils;
 
     public class WebApiApplication : HttpApplication
     {
@@ -18,7 +19,7 @@
             this._container = new WindsorContainer();
             this._container.Register(
                 Component.For<IWindsorContainer>().Instance(this._container))
-                .Install(new BllInstaller());
+                .Install(new BllInstaller(), new DalInstaller());
 
             AreaRegistration.RegisterAllAreas();
 

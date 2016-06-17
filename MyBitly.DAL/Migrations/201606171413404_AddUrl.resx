@@ -117,19 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="EMPTY_ARG_URL" xml:space="preserve">
-    <value>EMPTY_ARG_URL</value>
+  <data name="Target" xml:space="preserve">
+    <value>H4sIAAAAAAAEAM1X227jNhB9L9B/IPjUAlkxl5etIe0iayet0TgJVsm+09LYJkpRWpIKLCz6ZX3oJ/UXOtTdku0ku4uiyEtEzZw5czgX+Z+//vbfbxNJnkAbkaqAnnmnlICK0liodUBzu3rzlr5/9+MP/lWcbMmnxu7C2aGnMgHdWJtNGDPRBhJuvEREOjXpynpRmjAep+z89PQXdnbGACEoYhHif8yVFQmUD/g4TVUEmc25XKQxSFOf45uwRCW3PAGT8QgCuig+CCsLb3Z5Q8mlFBwphCBXlHClUsstEpw8GgitTtU6zPCAy4ciA7RbcWmgJj7pzF+aw+m5y4F1jg1UlBubJq8EPLuoRWFD96+SlraioWxXKK8tXNaldAF91LI6o2QYbTKV2lnuSOuV1gKM13qekN77k7YWsGTc3wmZ5tLmGgIFudVcnpD7fClF9DsUD+kfoAKVS9kniTTx3c4BHt3rNANti4+wqqnPY0rYrh8bOrZuPZ8qp7myF+eU3GJwvpTQ1kAv/9CmGn4FBZpbiO+5taCVw4BaMXY01m/cbJpoWHTYOJQs+PYG1NpuAvqWkmuxhbh5ruM/KoFdhi5W57CH3/GYN1jaeDFHwuK/3x7YZ10hjcsLu9ZygbLVpOrycMewtXsKDbuyrjVTh99NsoINwXZFayjpKFSN7vVqeR/ZllY3RVg1Rppxww7MG3/BswyF7M2f+oSE1fCZvglf35xJhcEis6dHW7ZtJKxGvobBWwyNTK+FNnbGLV9yd1XTOBmZDS7hgMBNsJ7Ow0bsZG+M3f87N10Oiu42BgideteYUILNVOYGLYn+VBr5lrOfS673dPY0lXmiDk2HY95Vr/b9q5OXI7Sd1wdpD8c4PhuIMNSZjYQezLrhpR0r+aFJG70t/UGJ+3W5Pb93R/VXmVCCAj2J2NVeWBgLiecMvPCznEqB+XYGC67ECoyt1gHFDXg+2OD/n23KjInlS1fqf77UhJP12bX1yp3S32Pqietow/WeIT5XMWwD+oXMDa6SzzlMyAOOcvLncOt920prGPyU8O3P33VNjQfps1uoWTfHVlHVDgGNlynmUHEdzYRX7KhxY/qs/9nsz8CIdQfhPqIVRO6OOtDGZq5WaaM3ZtZn1JgMrmMBlsco0KW2YsUji68jMKb8zPjEZY4mV8kS4rm6y22W20tjIFnKnZ3ss+Pxy0W8y9m/y9yT+R4pIE2BKcCd+pALGbe8r/dU0AEIVyt1iyEr/MxCuHXRIt2m6oVAtXwzyEC5Bn2AJJMIZu5UyJ/ga7jh19QNrHlUNPP1MMjzF7Eruz8TfK15YmqMzt/9FGTut+C7fwEsLovKPQ4AAA==</value>
   </data>
-  <data name="INVALID_ARG_URL" xml:space="preserve">
-    <value>INVALID_ARG_URL</value>
-  </data>
-  <data name="EXCEPTION_STORAGE_URL" xml:space="preserve">
-    <value>EXCEPTION_STORAGE_URL</value>
-  </data>
-  <data name="ShortenUrlException" xml:space="preserve">
-    <value>Не удалось сократить ссылку.</value>
-  </data>
-  <data name="UrlIsNullOrEmptyException" xml:space="preserve">
-    <value>Укажите ссылку.</value>
+  <data name="DefaultSchema" xml:space="preserve">
+    <value>dbo</value>
   </data>
 </root>
