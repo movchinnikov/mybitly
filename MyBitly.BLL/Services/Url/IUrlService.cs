@@ -5,5 +5,6 @@
     public interface IUrlService
     {
         ShortenResponse Shorten(string longUrl);
+        ShortenResponse Get(string hash);
     }
 }

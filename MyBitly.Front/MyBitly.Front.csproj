@@ -161,6 +161,10 @@
       <Project>{4a8774d7-15eb-4178-97bf-38293ef4955c}</Project>
       <Name>MyBitly.DAL</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MyBitly.Tests\MyBitly.Tests.csproj">
+      <Project>{09abc70f-697c-47a2-9c67-ae83f9e424ab}</Project>
+      <Name>MyBitly.Tests</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

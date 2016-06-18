@@ -120,6 +120,12 @@
   <data name="EMPTY_ARG_URL" xml:space="preserve">
     <value>EMPTY_ARG_URL</value>
   </data>
+  <data name="EMPTY_SHORT_URL" xml:space="preserve">
+    <value>EMPTY_SHORT_URL</value>
+  </data>
+  <data name="URL_NOT_FOUND" xml:space="preserve">
+    <value>URL_NOT_FOUND</value>
+  </data>
   <data name="INVALID_ARG_URL" xml:space="preserve">
     <value>INVALID_ARG_URL</value>
   </data>
@@ -131,5 +137,11 @@
   </data>
   <data name="UrlIsNullOrEmptyException" xml:space="preserve">
     <value>Укажите ссылку.</value>
+  </data>
+  <data name="HashIsNullOrEmptyException" xml:space="preserve">
+    <value>Укажите короткую ссылку.</value>
+  </data>
+  <data name="NotFoundException" xml:space="preserve">
+    <value>Ссылка не найдена.</value>
   </data>
 </root>

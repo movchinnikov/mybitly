@@ -1,6 +1,7 @@
 ﻿namespace MyBitly.Tests.Base
 {
     using System;
+    using System.Transactions;
     using BLL.Exceptions;
     using Castle.MicroKernel.Registration;
     using Castle.Windsor;
@@ -10,6 +11,7 @@
     {
         public IWindsorContainer Container;
         protected IWindsorContainer DefaultContainer;
+        private TransactionScope _scope;
 
         public BaseTest()
         {
@@ -27,11 +29,14 @@
             this.DefaultContainer.AddChildContainer(this.Container);
             this.Container.Register(
                 Component.For<IWindsorContainer>().Instance(this.Container));
+
+            this._scope = new TransactionScope();
         }
 
         [TearDown]
         public virtual void TearDown()
         {
+            if (this._scope != null) this._scope.Dispose();
             this.DefaultContainer.RemoveChildContainer(this.Container);
         }
 

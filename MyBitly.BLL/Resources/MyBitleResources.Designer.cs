@@ -70,11 +70,29 @@ namespace MyBitly.BLL.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to EMPTY_SHORT_URL.
+        /// </summary>
+        public static string EMPTY_SHORT_URL {
+            get {
+                return ResourceManager.GetString("EMPTY_SHORT_URL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to EXCEPTION_STORAGE_URL.
         /// </summary>
         public static string EXCEPTION_STORAGE_URL {
             get {
                 return ResourceManager.GetString("EXCEPTION_STORAGE_URL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Укажите короткую ссылку..
+        /// </summary>
+        public static string HashIsNullOrEmptyException {
+            get {
+                return ResourceManager.GetString("HashIsNullOrEmptyException", resourceCulture);
             }
         }
         
@@ -88,11 +106,29 @@ namespace MyBitly.BLL.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ссылка не найдена..
+        /// </summary>
+        public static string NotFoundException {
+            get {
+                return ResourceManager.GetString("NotFoundException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Не удалось сократить ссылку..
         /// </summary>
         public static string ShortenUrlException {
             get {
                 return ResourceManager.GetString("ShortenUrlException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to URL_NOT_FOUND.
+        /// </summary>
+        public static string URL_NOT_FOUND {
+            get {
+                return ResourceManager.GetString("URL_NOT_FOUND", resourceCulture);
             }
         }
         

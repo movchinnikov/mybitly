@@ -1,11 +1,11 @@
 ﻿namespace MyBitly.DAL.Repositories
 {
-    using System;
     using System.Data.Entity;
-    using Entities;
+    using System.Linq;
     using Attributes;
+    using Entities;
 
-    public class UrlRepository : IUrlRepository, IDisposable
+    public class UrlRepository : IUrlRepository
     {
         private readonly DbSet<UrlEntity> _dbSet;
         private readonly DbContext _context;
@@ -22,24 +22,10 @@
             return this._dbSet.Add(entity);
         }
 
-        private bool _disposed = false;
-
-        protected virtual void Dispose(bool disposing)
+        [UnitOfWork]
+        public UrlEntity Get(string hash)
         {
-            if (!this._disposed)
-            {
-                if (disposing)
-                {
-                    this._context.Dispose();
-                }
-            }
-            this._disposed = true;
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
+            return this._dbSet.FirstOrDefault(x => x.Hash == hash);
         }
     }
 }

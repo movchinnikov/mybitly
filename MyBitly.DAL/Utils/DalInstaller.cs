@@ -15,7 +15,7 @@
                 Component.For<DbContext>().ImplementedBy<MyBitlyContext>().LifestylePerWebRequest(),
                 Component.For<EfUnitOfWorkInterceptor>().LifestyleTransient(),
                 Component.For<IUrlRepository>().ImplementedBy<UrlRepository>()
-                    .Interceptors<EfUnitOfWorkInterceptor>().LifestyleTransient()
+                    .Interceptors<EfUnitOfWorkInterceptor>().LifestylePerWebRequest()
             );
         }
     }

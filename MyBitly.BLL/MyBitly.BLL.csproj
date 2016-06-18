@@ -73,6 +73,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\Api\Base\BaseApiController.cs" />
     <Compile Include="Controllers\Api\UrlController.cs" />
+    <Compile Include="Controllers\Base\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="ExceptionHandling\ApiExceptionFilterAttribute.cs" />
     <Compile Include="Exceptions\MyBitlyException.cs" />

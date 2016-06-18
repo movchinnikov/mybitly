@@ -37,14 +37,12 @@
             this._dbContext.SaveChanges();
             this._transaction.Commit();
             this._transaction.Dispose();
-            this._dbContext.Dispose();
         }
 
         public void Rollback()
         {
             this._transaction.Rollback();
             this._transaction.Dispose();
-            this._dbContext.Dispose();
         }
     }
 }

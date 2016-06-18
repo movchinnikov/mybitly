@@ -11,9 +11,21 @@
 
             routes.MapRoute(
                 name: "Default",
-                url: "{controller}/{action}/{id}",
+                url: "",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
             );
+
+            routes.MapRoute(
+                name: "URL",
+                url: "{hash}",
+                defaults: new { controller = "Home", action = "RedirectToLong", hash = UrlParameter.Optional }
+            );
+
+            routes.MapRoute(
+                name: "Basic",
+                url: "{controller}/{action}/{id}",
+                defaults: new { controller = "Home", id = UrlParameter.Optional }
+);
         }
     }
 }

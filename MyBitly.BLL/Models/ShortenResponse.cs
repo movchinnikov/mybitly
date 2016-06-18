@@ -9,6 +9,9 @@
 
         [JsonProperty(PropertyName = "hash")]
         public string Hash { get; set; }
+
+        [JsonProperty(PropertyName = "short_url")]
+        public string ShortUrl { get; set; }
     }
 
     public class ExceptionResponse

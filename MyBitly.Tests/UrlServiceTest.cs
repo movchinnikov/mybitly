@@ -1,9 +1,15 @@
 ﻿namespace MyBitly.Tests
 {
+    using System.Data.Entity;
+    using System.Linq;
     using Base;
     using BLL.Resources;
     using BLL.Services;
     using Castle.MicroKernel.Registration;
+    using DAL;
+    using DAL.Entities;
+    using DAL.Repositories;
+    using DAL.UnitOfWork;
     using NUnit.Framework;
 
     [TestFixture]
@@ -11,16 +17,26 @@
     {
         private IUrlService _urlService;
 
+        private DbSet<UrlEntity> _dbSet;
+        private DbContext _dbContext;
+        
         [SetUp]
         public override void SetUp()
         {
             base.SetUp();
 
             this.Container.Register(
-                Component.For<IUrlService>().ImplementedBy<UrlService>().LifestyleTransient()
+                Component.For<IUrlService>().ImplementedBy<UrlService>().LifestyleTransient(),
+                Component.For<DbContext>().ImplementedBy<MyBitlyContext>().LifestylePerThread(),
+                Component.For<EfUnitOfWorkInterceptor>().LifestyleTransient(),
+                Component.For<IUrlRepository>().ImplementedBy<UrlRepository>()
+                    .Interceptors<EfUnitOfWorkInterceptor>().LifestylePerThread()
                 );
 
             this._urlService = this.Container.Resolve<IUrlService>();
+
+            this._dbContext = this.Container.Resolve<DbContext>();
+            this._dbSet = this._dbContext.Set<UrlEntity>();
         }
 
         [TestCase("localhost")]
@@ -67,6 +83,44 @@
             Assert.AreEqual(longUrl, response.LongUrl);
             Assert.IsNotNull(response.Hash);
             Assert.IsNotEmpty(response.Hash);
+            
+            var dbResponse = this._dbSet.FirstOrDefault(x => x.Hash == response.Hash);
+            Assert.NotNull(dbResponse);
+            Assert.AreEqual(response.Hash, dbResponse.Hash);
+            Assert.AreEqual(response.LongUrl, dbResponse.LongUrl);
+        }
+
+        [Test]
+        public void Get_NotExist_Negative()
+        {
+            var ex = InvokeAndAssertException(() => this._urlService.Get("1"), MyBitleResources.NotFoundException);
+            Assert.AreEqual(MyBitleResources.URL_NOT_FOUND, ex.Code);
+            Assert.AreEqual(104, ex.StatusCode);
+        }
+
+        [TestCase("")]
+        [TestCase(null)]
+        public void Get_HashIsEmpty_Negative(string hash)
+        {
+            var ex = InvokeAndAssertException(() => this._urlService.Get(hash), MyBitleResources.HashIsNullOrEmptyException);
+            Assert.AreEqual(MyBitleResources.EMPTY_SHORT_URL, ex.Code);
+            Assert.AreEqual(103, ex.StatusCode);
+        }
+
+        [Test]
+        public void Get_Positive()
+        {
+            const string hash = "тестовый";
+
+            var entity = new UrlEntity {Hash = hash, LongUrl = "http://google.ru"};
+            this._dbSet.Add(entity);
+            this._dbContext.SaveChanges();
+
+            var fromDb = this._urlService.Get(hash);
+
+            Assert.NotNull(fromDb);
+            Assert.AreEqual(entity.Hash, fromDb.Hash);
+            Assert.AreEqual(entity.LongUrl, fromDb.LongUrl);
         }
     }
 }

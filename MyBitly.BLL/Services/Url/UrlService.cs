@@ -54,7 +54,28 @@
                 };
             }
 
-            return new ShortenResponse {LongUrl = longUrl, Hash = hash};
+            return new ShortenResponse { LongUrl = longUrl, Hash = hash, ShortUrl = string.Format("{0}/{1}", "http://localhost:21460", hash) };
+        }
+
+        public ShortenResponse Get(string hash)
+        {
+            if (string.IsNullOrWhiteSpace(hash))
+                throw new MyBitlyException(MyBitleResources.HashIsNullOrEmptyException)
+                {
+                    Code = MyBitleResources.EMPTY_SHORT_URL,
+                    StatusCode = 103
+                };
+
+            var entity = this.Repository.Get(hash);
+
+            if (entity == null)
+                throw new MyBitlyException(MyBitleResources.NotFoundException)
+                {
+                    Code = MyBitleResources.URL_NOT_FOUND,
+                    StatusCode = 104
+                };
+
+            return new ShortenResponse { LongUrl = entity.LongUrl, Hash = entity.Hash, ShortUrl = string.Format("{0}/{1}", "http://localhost:21460", entity.Hash) };
         }
     }
 }

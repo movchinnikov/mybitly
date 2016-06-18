@@ -5,5 +5,6 @@
     public interface IUrlRepository
     {
         UrlEntity Create(UrlEntity entity);
+        UrlEntity Get(string hash);
     }
 }
