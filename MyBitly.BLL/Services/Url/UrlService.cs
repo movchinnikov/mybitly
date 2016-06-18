@@ -1,8 +1,11 @@
 ﻿namespace MyBitly.BLL.Services
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using Castle.Windsor;
     using DAL.Entities;
+    using DAL.Filters;
     using DAL.Repositories;
     using Exceptions;
     using Models;
@@ -40,10 +43,11 @@
                 };
 
             string hash;
+            UrlEntity entity = null;
             try
             {
                 hash = Guid.NewGuid().GetHashCode().ToString("x");
-                this.Repository.Create(new UrlEntity {LongUrl = longUrl, Hash = hash});
+                entity = this.Repository.Create(new UrlEntity { LongUrl = longUrl, Hash = hash });
             }
             catch (Exception e)
             {
@@ -54,7 +58,11 @@
                 };
             }
 
-            return new ShortenResponse { LongUrl = longUrl, Hash = hash, ShortUrl = string.Format("{0}/{1}", "http://localhost:21460", hash) };
+            return new ShortenResponse { 
+                Id = entity.Id, 
+                LongUrl = entity.LongUrl, 
+                Hash = entity.Hash, 
+                ShortUrl = string.Format("{0}/{1}", "http://localhost:21460", hash) };
         }
 
         public ShortenResponse Get(string hash)
@@ -75,7 +83,63 @@
                     StatusCode = 104
                 };
 
-            return new ShortenResponse { LongUrl = entity.LongUrl, Hash = entity.Hash, ShortUrl = string.Format("{0}/{1}", "http://localhost:21460", entity.Hash) };
+            return new ShortenResponse
+            {
+                Id = entity.Id, 
+                LongUrl = entity.LongUrl, 
+                Hash = entity.Hash, 
+                ShortUrl = string.Format("{0}/{1}", "http://localhost:21460", entity.Hash)
+            };
+        }
+
+        public ListResponse LinkHistory(UrlHistoryRequest request)
+        {
+            if (request == null)
+                throw new MyBitlyException(MyBitleResources.InvalidRequestException)
+                {
+                    Code = MyBitleResources.INVALID_REQUEST,
+                    StatusCode = 105
+                };
+
+            var filter = BuildListFilter(request);
+
+            if (!filter.IsCorrect())
+                throw new MyBitlyException(MyBitleResources.InvalidRequestException)
+                {
+                    Code = MyBitleResources.INVALID_REQUEST,
+                    StatusCode = 105
+                };
+
+            var entities = this.Repository.GetList(filter);
+
+            if (entities == null || entities.Data == null)
+                throw new MyBitlyException(MyBitleResources.UNKNOW_EXCEPTION)
+                {
+                    Code = MyBitleResources.UNKNOW_EXCEPTION,
+                    StatusCode = 106
+                };
+
+            return new ListResponse
+            {
+                Data = entities.Data.Select(x => new ShortenResponse
+                {
+                    Hash = x.Hash,
+                    Id = x.Id,
+                    LongUrl = x.LongUrl,
+                    ShortUrl = string.Format("{0}/{1}", "http://localhost:21460", x.Hash)
+                }),
+                Count = entities.TotalCount
+            };
+        }
+
+        private static UrlListFilter BuildListFilter(UrlHistoryRequest request)
+        {
+            return new UrlListFilter
+            {
+                Offset = request.Offset, 
+                Limit = request.Limit, 
+                Hashes = request.Hashes
+            };
         }
     }
 }

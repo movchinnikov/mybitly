@@ -1,8 +1,11 @@
 ﻿namespace MyBitly.Tests
 {
+    using System;
     using System.Data.Entity;
+    using System.Diagnostics;
     using System.Linq;
     using Base;
+    using BLL.Models;
     using BLL.Resources;
     using BLL.Services;
     using Castle.MicroKernel.Registration;
@@ -37,6 +40,8 @@
 
             this._dbContext = this.Container.Resolve<DbContext>();
             this._dbSet = this._dbContext.Set<UrlEntity>();
+
+            this._dbContext.Database.Log = sql => Debug.WriteLine(sql);
         }
 
         [TestCase("localhost")]
@@ -121,6 +126,172 @@
             Assert.NotNull(fromDb);
             Assert.AreEqual(entity.Hash, fromDb.Hash);
             Assert.AreEqual(entity.LongUrl, fromDb.LongUrl);
+        }
+
+        [Test]
+        public void GetList_NegativeOffset_Negative()
+        {
+            var request = new UrlHistoryRequest {Offset = -1, Hashes = new[] {"googleru", "yandexru"}};
+
+            var ex = InvokeAndAssertException(() => this._urlService.LinkHistory(request), MyBitleResources.InvalidRequestException);
+            Assert.AreEqual(MyBitleResources.INVALID_REQUEST, ex.Code);
+            Assert.AreEqual(105, ex.StatusCode);
+        }
+
+        [Test]
+        public void GetList_NullRequest_Negative()
+        {
+            var ex = InvokeAndAssertException(() => this._urlService.LinkHistory(null), MyBitleResources.InvalidRequestException);
+            Assert.AreEqual(MyBitleResources.INVALID_REQUEST, ex.Code);
+            Assert.AreEqual(105, ex.StatusCode);
+        }
+
+        [Test]
+        public void GetList_NegativeLimit_Negative()
+        {
+            var request = new UrlHistoryRequest { Limit = -1, Hashes = new[] { "googleru", "yandexru" } };
+
+            var ex = InvokeAndAssertException(() => this._urlService.LinkHistory(request), MyBitleResources.InvalidRequestException);
+            Assert.AreEqual(MyBitleResources.INVALID_REQUEST, ex.Code);
+            Assert.AreEqual(105, ex.StatusCode);
+        }
+
+        [Test]
+        public void GetList_NullHashes_Negative()
+        {
+            var request = new UrlHistoryRequest { Limit = -1, Hashes = null };
+
+            var ex = InvokeAndAssertException(() => this._urlService.LinkHistory(request), MyBitleResources.InvalidRequestException);
+            Assert.AreEqual(MyBitleResources.INVALID_REQUEST, ex.Code);
+            Assert.AreEqual(105, ex.StatusCode);
+        }
+
+        [Test]
+        public void GetList_EmptyHashes_Negative()
+        {
+            var request = new UrlHistoryRequest { Limit = -1, Hashes = new String[0] };
+
+            var ex = InvokeAndAssertException(() => this._urlService.LinkHistory(request), MyBitleResources.InvalidRequestException);
+            Assert.AreEqual(MyBitleResources.INVALID_REQUEST, ex.Code);
+            Assert.AreEqual(105, ex.StatusCode);
+        }
+
+        [Test]
+        public void GetList_Positive()
+        {
+            var entity = new UrlEntity { Hash = "googleru", LongUrl = "http://google.ru" };
+            this._dbSet.Add(entity);
+            entity = new UrlEntity { Hash = "vkrulink", LongUrl = "http://vk.ru" };
+            this._dbSet.Add(entity);
+            entity = new UrlEntity { Hash = "yandexru", LongUrl = "http://ya.ru" };
+            this._dbSet.Add(entity);
+            this._dbContext.SaveChanges();
+
+            var response = this._urlService.LinkHistory(new UrlHistoryRequest { Hashes = new[] { "googleru", "yandexru" } });
+            Assert.NotNull(response);
+            Assert.NotNull(response.Data);
+            Assert.AreEqual(2, response.Data.Count());
+            Assert.AreEqual(2, response.Count);
+
+            var yandexDbResponse = response.Data.First() as ShortenResponse;
+            var googleDbResponse = response.Data.Last() as ShortenResponse;
+
+            Assert.NotNull(googleDbResponse);
+            Assert.NotNull(yandexDbResponse);
+
+            Assert.AreEqual("googleru", googleDbResponse.Hash);
+            Assert.AreEqual("yandexru", yandexDbResponse.Hash);
+
+            Assert.AreEqual("http://google.ru", googleDbResponse.LongUrl);
+            Assert.AreEqual("http://ya.ru", yandexDbResponse.LongUrl);
+        }
+
+        [Test]
+        public void GetList_HasLimit_Positive()
+        {
+            var entity = new UrlEntity { Hash = "googleru", LongUrl = "http://google.ru" };
+            this._dbSet.Add(entity);
+            entity = new UrlEntity { Hash = "vkrulink", LongUrl = "http://vk.ru" };
+            this._dbSet.Add(entity);
+            entity = new UrlEntity { Hash = "yandexru", LongUrl = "http://ya.ru" };
+            this._dbSet.Add(entity);
+            this._dbContext.SaveChanges();
+
+            var response = this._urlService.LinkHistory(new UrlHistoryRequest { Limit = 1, Hashes = new[] { "googleru", "yandexru" } });
+            Assert.NotNull(response);
+            Assert.NotNull(response.Data);
+            Assert.AreEqual(1, response.Data.Count());
+            Assert.AreEqual(2, response.Count);
+
+            var yandexDbResponse = response.Data.First() as ShortenResponse;
+
+            Assert.NotNull(yandexDbResponse);
+
+            Assert.AreEqual("yandexru", yandexDbResponse.Hash);
+
+            Assert.AreEqual("http://ya.ru", yandexDbResponse.LongUrl);
+        }
+
+        [Test]
+        public void GetList_HasOffset_Positive()
+        {
+            var entity = new UrlEntity { Hash = "googleru", LongUrl = "http://google.ru" };
+            this._dbSet.Add(entity);
+            entity = new UrlEntity { Hash = "vkrulink", LongUrl = "http://vk.ru" };
+            this._dbSet.Add(entity);
+            entity = new UrlEntity { Hash = "yandexru", LongUrl = "http://ya.ru" };
+            this._dbSet.Add(entity);
+            this._dbContext.SaveChanges();
+
+            var response = this._urlService.LinkHistory(new UrlHistoryRequest { Offset = 1, Hashes = new[] { "googleru", "yandexru" } });
+            Assert.NotNull(response);
+            Assert.NotNull(response.Data);
+            Assert.AreEqual(1, response.Data.Count());
+            Assert.AreEqual(2, response.Count);
+
+            var googleDbResponse = response.Data.First() as ShortenResponse;
+
+            Assert.NotNull(googleDbResponse);
+
+            Assert.AreEqual("googleru", googleDbResponse.Hash);
+
+            Assert.AreEqual("http://google.ru", googleDbResponse.LongUrl);
+        }
+
+        [Test]
+        public void GetList_HasOffsetAndLimit_Positive()
+        {
+            var entity = new UrlEntity { Hash = "googleru", LongUrl = "http://google.ru" };
+            this._dbSet.Add(entity);
+            entity = new UrlEntity { Hash = "vkrulink", LongUrl = "http://vk.ru" };
+            this._dbSet.Add(entity);
+            entity = new UrlEntity { Hash = "yandexru", LongUrl = "http://ya.ru" };
+            this._dbSet.Add(entity);
+            this._dbContext.SaveChanges();
+
+            var response = this._urlService.LinkHistory(new UrlHistoryRequest { Limit = 1, Offset = 1, Hashes = new[] { "googleru", "yandexru" } });
+            Assert.NotNull(response);
+            Assert.NotNull(response.Data);
+            Assert.AreEqual(1, response.Data.Count());
+            Assert.AreEqual(2, response.Count);
+
+            var googleDbResponse = response.Data.First() as ShortenResponse;
+
+            Assert.NotNull(googleDbResponse);
+
+            Assert.AreEqual("googleru", googleDbResponse.Hash);
+
+            Assert.AreEqual("http://google.ru", googleDbResponse.LongUrl);
+        }
+
+        [Test]
+        public void GetList_EmptyResult_Positive()
+        {
+            var response = this._urlService.LinkHistory(new UrlHistoryRequest { Hashes = new[] { "тестовый" } });
+            Assert.NotNull(response);
+            Assert.NotNull(response.Data);
+            Assert.AreEqual(0, response.Data.Count());
+            Assert.AreEqual(0, response.Count);
         }
     }
 }

@@ -6,5 +6,6 @@
     {
         ShortenResponse Shorten(string longUrl);
         ShortenResponse Get(string hash);
+        ListResponse LinkHistory(UrlHistoryRequest request);
     }
 }

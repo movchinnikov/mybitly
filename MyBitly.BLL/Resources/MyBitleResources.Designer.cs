@@ -106,6 +106,24 @@ namespace MyBitly.BLL.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to INVALID_REQUEST.
+        /// </summary>
+        public static string INVALID_REQUEST {
+            get {
+                return ResourceManager.GetString("INVALID_REQUEST", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Некорректный запрос..
+        /// </summary>
+        public static string InvalidRequestException {
+            get {
+                return ResourceManager.GetString("InvalidRequestException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ссылка не найдена..
         /// </summary>
         public static string NotFoundException {
@@ -120,6 +138,24 @@ namespace MyBitly.BLL.Resources {
         public static string ShortenUrlException {
             get {
                 return ResourceManager.GetString("ShortenUrlException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to UNKNOW_EXCEPTION.
+        /// </summary>
+        public static string UNKNOW_EXCEPTION {
+            get {
+                return ResourceManager.GetString("UNKNOW_EXCEPTION", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Не известная ошибка..
+        /// </summary>
+        public static string UnknowException {
+            get {
+                return ResourceManager.GetString("UnknowException", resourceCulture);
             }
         }
         

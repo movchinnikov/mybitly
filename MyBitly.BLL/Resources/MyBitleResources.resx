@@ -132,6 +132,12 @@
   <data name="EXCEPTION_STORAGE_URL" xml:space="preserve">
     <value>EXCEPTION_STORAGE_URL</value>
   </data>
+  <data name="INVALID_REQUEST" xml:space="preserve">
+    <value>INVALID_REQUEST</value>
+  </data>
+  <data name="UNKNOW_EXCEPTION" xml:space="preserve">
+    <value>UNKNOW_EXCEPTION</value>
+  </data>
   <data name="ShortenUrlException" xml:space="preserve">
     <value>Не удалось сократить ссылку.</value>
   </data>
@@ -143,5 +149,11 @@
   </data>
   <data name="NotFoundException" xml:space="preserve">
     <value>Ссылка не найдена.</value>
+  </data>
+  <data name="InvalidRequestException" xml:space="preserve">
+    <value>Некорректный запрос.</value>
+  </data>
+  <data name="UnknowException" xml:space="preserve">
+    <value>Не известная ошибка.</value>
   </data>
 </root>

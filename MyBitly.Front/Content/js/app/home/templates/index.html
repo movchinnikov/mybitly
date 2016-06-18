@@ -21,5 +21,9 @@
         </div>
     </form>
 
-    <div><a href="{{shortUrl}}" target="_blank">{{shortUrl}}</a></div>
+    <div data-ng-if="!!shortUrl">
+        <a href="{{shortUrl}}" target="_blank">{{shortUrl}}</a>
+    </div>
+
+    <div><a href="#/mylinks">Ранее созданные ссылки</a></div>
 </div>

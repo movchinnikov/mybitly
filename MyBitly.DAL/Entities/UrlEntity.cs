@@ -4,12 +4,8 @@
     using System.ComponentModel.DataAnnotations.Schema;
 
     [Table("Url")]
-    public class UrlEntity
+    public class UrlEntity : Entity
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
-
         [StringLength(8)]
         [Required]
         [Index(IsUnique = true)]

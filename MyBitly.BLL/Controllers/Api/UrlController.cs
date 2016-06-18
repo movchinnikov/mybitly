@@ -38,11 +38,30 @@
         }
 
         [HttpGet]
-        public HttpResponseMessage Get(string hash)
+        public HttpResponseMessage Info(string hash)
         {
             try
             {
                 var response = this._urlService.Get(hash);
+                return new HttpResponseMessage()
+                {
+                    Content =
+                        new ObjectContent<Response>(new Response { Data = response },
+                            new JsonMediaTypeFormatter(), "application/json")
+                };
+            }
+            finally
+            {
+                if (this._urlService != null) this.Container.Release(this._urlService);
+            }
+        }
+
+        [HttpGet]
+        public HttpResponseMessage LinkHistory(UrlHistoryRequest request)
+        {
+            try
+            {
+                var response = this._urlService.LinkHistory(request);
                 return new HttpResponseMessage()
                 {
                     Content =

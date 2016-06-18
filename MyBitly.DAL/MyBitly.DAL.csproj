@@ -50,12 +50,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes\UnitOfWork.cs" />
+    <Compile Include="Entities\Base\Entity.cs" />
     <Compile Include="Entities\UrlEntity.cs" />
+    <Compile Include="Extensions\QueryableExtensions.cs" />
+    <Compile Include="Filters\Base\BaseListFilter.cs" />
+    <Compile Include="Filters\UrlListFilter.cs" />
     <Compile Include="Migrations\201606171413404_AddUrl.cs" />
     <Compile Include="Migrations\201606171413404_AddUrl.Designer.cs">
       <DependentUpon>201606171413404_AddUrl.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\ListPage.cs" />
     <Compile Include="MyBitlyContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\Url\IUrlRepository.cs" />

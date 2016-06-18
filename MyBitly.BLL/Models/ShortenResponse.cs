@@ -4,6 +4,9 @@
 
     public class ShortenResponse
     {
+        [JsonProperty(PropertyName = "id")]
+        public int Id { get; set; }
+
         [JsonProperty(PropertyName = "long_url")]
         public string LongUrl { get; set; }
 
@@ -12,23 +15,5 @@
 
         [JsonProperty(PropertyName = "short_url")]
         public string ShortUrl { get; set; }
-    }
-
-    public class ExceptionResponse
-    {
-        [JsonProperty(PropertyName = "message")]
-        public string Message { get; set; }
-
-        [JsonProperty(PropertyName = "status_txt")]
-        public string Code { get; set; }
-
-        [JsonProperty(PropertyName = "status_code")]
-        public int StatusCode { get; set; }
-    }
-
-    public class Response
-    {
-        [JsonProperty(PropertyName = "data")]
-        public object Data { get; set; }
     }
 }
