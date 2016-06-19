@@ -57,7 +57,7 @@
         }
 
         [HttpGet]
-        public HttpResponseMessage LinkHistory(UrlHistoryRequest request)
+        public HttpResponseMessage LinkHistory([FromUri]UrlHistoryRequest request)
         {
             try
             {
@@ -65,7 +65,7 @@
                 return new HttpResponseMessage()
                 {
                     Content =
-                        new ObjectContent<Response>(new Response { Data = response },
+                        new ObjectContent<ListResponse>(response,
                             new JsonMediaTypeFormatter(), "application/json")
                 };
             }

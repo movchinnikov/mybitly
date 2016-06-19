@@ -3,5 +3,20 @@
 
     $scope.links = [];
 
+    var currentCookieValue = $cookies.get(cookieName);
 
+    if (!!currentCookieValue) {
+        var filter = [];
+        var hashes = currentCookieValue.split(';');
+        for (var i = 0; i < hashes.length; i++) {
+            if (!!hashes[i]) {
+                filter.push(hashes[i]);
+            }
+        }
+
+        homeFactory.linkHistory(filter)
+            .success(function(response) {
+                $scope.links = response.data;
+            });
+    }
 });

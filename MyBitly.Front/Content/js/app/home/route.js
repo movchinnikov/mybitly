@@ -4,7 +4,7 @@
             templateUrl: 'Content/js/app/home/templates/index.html',
             controller: 'homeCtrl'
         })
-        .when('mylinks', {
+        .when('/mylinks', {
             templateUrl: 'Content/js/app/home/templates/mylinks.html',
             controller: 'myLinksCtrl'
         });

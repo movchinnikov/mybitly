@@ -12,5 +12,21 @@
         });
     }
 
+    service.linkHistory = function (hashes) {
+
+        var request = {
+            "hashes[]": hashes
+        }
+
+        return $http({
+            url: '/api/linkHistory',
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            params: request
+        });
+    }
+
     return service;
 });

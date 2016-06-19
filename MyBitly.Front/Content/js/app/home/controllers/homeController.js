@@ -7,9 +7,8 @@
         homeFactory.shorten($scope.longUrl)
             .success(function (response) {
                 $scope.shortUrl = response.data.short_url;
-                var id = response.data.id;
                 var currentCookieValue = $cookies.get(cookieName);
-                var responseCookie = $scope.shortUrl + ':' + id + ';';
+                var responseCookie = response.data.hash + ';';
                 var newCookieValue = ((!!currentCookieValue) ? currentCookieValue : '') + responseCookie;
                 $cookies.put(cookieName, newCookieValue);
             })

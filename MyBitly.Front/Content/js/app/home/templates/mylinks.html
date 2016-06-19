@@ -1,1 +1,15 @@
-﻿
+﻿<div class="link-container">
+    <ul id="anon_history" class="list-group anon_history">
+        <li id="{{link.hash}}" data-ng-repeat="link in links" class="list-group-item">
+            <div class="unauth-title">
+                <a class="article-title" href="{{link.long_url}}" target="_blank">{{link.long_url}}"</a>
+            </div>
+            <div class="unauth-title-url">
+                <a class="article-title smaller" href="{{link.long_url}}" target="_blank">{{link.long_url}}"</a>
+            </div>
+            <div class="unauth-short-url">
+                <a href="{{link.short_url}}" target="_blank">{{link.short_url}}"</a>
+            </div>
+        </li>
+    </ul>
+</div>
