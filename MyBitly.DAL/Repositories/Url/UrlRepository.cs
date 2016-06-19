@@ -66,5 +66,12 @@
 
             return entity;
         }
+
+        [UnitOfWork]
+        public void SetPageTitle(UrlEntity entity)
+        {
+            this.Session.Set<UrlEntity>().Attach(entity);
+            this.Session.Entry(entity).Property(x => x.Title).IsModified = true;
+        }
     }
 }

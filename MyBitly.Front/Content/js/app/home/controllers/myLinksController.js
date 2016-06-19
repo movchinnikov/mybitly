@@ -1,4 +1,4 @@
-﻿app.controller('myLinksCtrl', function ($scope, $cookies, homeFactory) {
+﻿app.controller('myLinksCtrl', function ($scope, $cookies, notify, homeFactory) {
     var cookieName = 'anon_shortlinks';
 
     $scope.links = [];
@@ -17,6 +17,9 @@
         homeFactory.linkHistory(filter)
             .success(function(response) {
                 $scope.links = response.data;
+            })
+            .error(function(ex) {
+                notify({ message: ex.data.message, duration: 3000, classes: 'alert alert-danger', position: 'right' });
             });
     }
 });

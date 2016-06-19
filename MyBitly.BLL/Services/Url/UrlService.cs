@@ -6,6 +6,8 @@
     using System.Net;
     using System.Text;
     using System.Text.RegularExpressions;
+    using System.Threading;
+    using System.Threading.Tasks;
     using Castle.Windsor;
     using DAL.Entities;
     using DAL.Filters;
@@ -34,12 +36,11 @@
             {
                 BeforeShorten(longUrl);
 
-                var title = GetPageTitle(longUrl);
                 UrlEntity entity = null;
                 try
                 {
                     var hash = Guid.NewGuid().GetHashCode().ToString("x");
-                    entity = this.Repository.Create(new UrlEntity {LongUrl = longUrl, Hash = hash, Title = title});
+                    entity = this.Repository.Create(new UrlEntity { LongUrl = longUrl, Hash = hash, Title = longUrl });
                 }
                 catch (Exception e)
                 {
@@ -49,6 +50,8 @@
                         StatusCode = 102
                     };
                 }
+
+                this.SetPageTitle(entity);
 
                 var response = (ShortenResponse) entity;
                 response.ShortUrl = string.Format("{0}/{1}", "http://localhost:21460", response.Hash);
@@ -67,6 +70,15 @@
                     StatusCode = 106
                 };
             }
+        }
+
+        private void SetPageTitle(UrlEntity entity)
+        {
+            Task.Run(() =>
+            {
+                entity.Title = GetPageTitle(entity.LongUrl);
+                this.Repository.SetPageTitle(entity);
+            });
         }
 
         private static void BeforeShorten(string longUrl)

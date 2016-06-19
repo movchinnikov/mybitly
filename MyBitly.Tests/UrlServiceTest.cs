@@ -53,7 +53,7 @@
         [TestCase(null)]
         public void Shorten_Empty_Negative(string longUrl)
         {
-            var ex = InvokeAndAssertException(() => this._urlService.Shorten(longUrl), MyBitlyResources.UrlIsNullOrEmptyException);
+            var ex = InvokeAndAssertException(() => this._urlService.Shorten(longUrl), MyBitlyResources.ShortenUrlException);
             Assert.AreEqual(MyBitlyResources.EMPTY_ARG_URL, ex.Code);
             Assert.AreEqual(100, ex.StatusCode);
         }
@@ -98,7 +98,7 @@
         [Test]
         public void Get_NotExist_Negative()
         {
-            var ex = InvokeAndAssertException(() => this._urlService.Get("1"), MyBitlyResources.NotFoundException);
+            var ex = InvokeAndAssertException(() => this._urlService.Get("1"), MyBitlyResources.GetException);
             Assert.AreEqual(MyBitlyResources.URL_NOT_FOUND, ex.Code);
             Assert.AreEqual(104, ex.StatusCode);
         }
