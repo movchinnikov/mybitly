@@ -44,8 +44,8 @@
         [TestCase("www.localhost")]
         public void Shorten_NoFormat_Negative(string longUrl)
         {
-            var ex = InvokeAndAssertException(() => this._urlService.Shorten(longUrl), MyBitleResources.ShortenUrlException);
-            Assert.AreEqual(MyBitleResources.INVALID_ARG_URL, ex.Code);
+            var ex = InvokeAndAssertException(() => this._urlService.Shorten(longUrl), MyBitlyResources.ShortenUrlException);
+            Assert.AreEqual(MyBitlyResources.INVALID_ARG_URL, ex.Code);
             Assert.AreEqual(101, ex.StatusCode);
         }
 
@@ -53,8 +53,8 @@
         [TestCase(null)]
         public void Shorten_Empty_Negative(string longUrl)
         {
-            var ex = InvokeAndAssertException(() => this._urlService.Shorten(longUrl), MyBitleResources.UrlIsNullOrEmptyException);
-            Assert.AreEqual(MyBitleResources.EMPTY_ARG_URL, ex.Code);
+            var ex = InvokeAndAssertException(() => this._urlService.Shorten(longUrl), MyBitlyResources.UrlIsNullOrEmptyException);
+            Assert.AreEqual(MyBitlyResources.EMPTY_ARG_URL, ex.Code);
             Assert.AreEqual(100, ex.StatusCode);
         }
 
@@ -98,8 +98,8 @@
         [Test]
         public void Get_NotExist_Negative()
         {
-            var ex = InvokeAndAssertException(() => this._urlService.Get("1"), MyBitleResources.NotFoundException);
-            Assert.AreEqual(MyBitleResources.URL_NOT_FOUND, ex.Code);
+            var ex = InvokeAndAssertException(() => this._urlService.Get("1"), MyBitlyResources.NotFoundException);
+            Assert.AreEqual(MyBitlyResources.URL_NOT_FOUND, ex.Code);
             Assert.AreEqual(104, ex.StatusCode);
         }
 
@@ -107,8 +107,8 @@
         [TestCase(null)]
         public void Get_HashIsEmpty_Negative(string hash)
         {
-            var ex = InvokeAndAssertException(() => this._urlService.Get(hash), MyBitleResources.HashIsNullOrEmptyException);
-            Assert.AreEqual(MyBitleResources.EMPTY_SHORT_URL, ex.Code);
+            var ex = InvokeAndAssertException(() => this._urlService.Get(hash), MyBitlyResources.GetException);
+            Assert.AreEqual(MyBitlyResources.EMPTY_SHORT_URL, ex.Code);
             Assert.AreEqual(103, ex.StatusCode);
         }
 
@@ -136,16 +136,16 @@
         {
             var request = new UrlHistoryRequest {Offset = -1, Hashes = new[] {"googleru", "yandexru"}};
 
-            var ex = InvokeAndAssertException(() => this._urlService.LinkHistory(request), MyBitleResources.InvalidRequestException);
-            Assert.AreEqual(MyBitleResources.INVALID_REQUEST, ex.Code);
+            var ex = InvokeAndAssertException(() => this._urlService.LinkHistory(request), MyBitlyResources.GetListException);
+            Assert.AreEqual(MyBitlyResources.INVALID_REQUEST, ex.Code);
             Assert.AreEqual(105, ex.StatusCode);
         }
 
         [Test]
         public void GetList_NullRequest_Negative()
         {
-            var ex = InvokeAndAssertException(() => this._urlService.LinkHistory(null), MyBitleResources.InvalidRequestException);
-            Assert.AreEqual(MyBitleResources.INVALID_REQUEST, ex.Code);
+            var ex = InvokeAndAssertException(() => this._urlService.LinkHistory(null), MyBitlyResources.GetListException);
+            Assert.AreEqual(MyBitlyResources.INVALID_REQUEST, ex.Code);
             Assert.AreEqual(105, ex.StatusCode);
         }
 
@@ -154,8 +154,8 @@
         {
             var request = new UrlHistoryRequest { Limit = -1, Hashes = new[] { "googleru", "yandexru" } };
 
-            var ex = InvokeAndAssertException(() => this._urlService.LinkHistory(request), MyBitleResources.InvalidRequestException);
-            Assert.AreEqual(MyBitleResources.INVALID_REQUEST, ex.Code);
+            var ex = InvokeAndAssertException(() => this._urlService.LinkHistory(request), MyBitlyResources.GetListException);
+            Assert.AreEqual(MyBitlyResources.INVALID_REQUEST, ex.Code);
             Assert.AreEqual(105, ex.StatusCode);
         }
 
@@ -164,8 +164,8 @@
         {
             var request = new UrlHistoryRequest { Limit = -1, Hashes = null };
 
-            var ex = InvokeAndAssertException(() => this._urlService.LinkHistory(request), MyBitleResources.InvalidRequestException);
-            Assert.AreEqual(MyBitleResources.INVALID_REQUEST, ex.Code);
+            var ex = InvokeAndAssertException(() => this._urlService.LinkHistory(request), MyBitlyResources.GetListException);
+            Assert.AreEqual(MyBitlyResources.INVALID_REQUEST, ex.Code);
             Assert.AreEqual(105, ex.StatusCode);
         }
 
@@ -174,8 +174,8 @@
         {
             var request = new UrlHistoryRequest { Limit = -1, Hashes = new String[0] };
 
-            var ex = InvokeAndAssertException(() => this._urlService.LinkHistory(request), MyBitleResources.InvalidRequestException);
-            Assert.AreEqual(MyBitleResources.INVALID_REQUEST, ex.Code);
+            var ex = InvokeAndAssertException(() => this._urlService.LinkHistory(request), MyBitlyResources.GetListException);
+            Assert.AreEqual(MyBitlyResources.INVALID_REQUEST, ex.Code);
             Assert.AreEqual(105, ex.StatusCode);
         }
 
@@ -320,8 +320,8 @@
         [Test]
         public void Increment_NotExisitsHash_Negative()
         {
-            var ex = InvokeAndAssertException(() => this._urlService.Increment("тестовый"), MyBitleResources.NotFoundException);
-            Assert.AreEqual(MyBitleResources.URL_NOT_FOUND, ex.Code);
+            var ex = InvokeAndAssertException(() => this._urlService.Increment("тестовый"), MyBitlyResources.NotFoundException);
+            Assert.AreEqual(MyBitlyResources.URL_NOT_FOUND, ex.Code);
             Assert.AreEqual(104, ex.StatusCode);
         }
 
@@ -329,8 +329,8 @@
         [TestCase(null)]
         public void Increment_HashIsEmpty_Negative(string hash)
         {
-            var ex = InvokeAndAssertException(() => this._urlService.Increment(hash), MyBitleResources.HashIsNullOrEmptyException);
-            Assert.AreEqual(MyBitleResources.EMPTY_SHORT_URL, ex.Code);
+            var ex = InvokeAndAssertException(() => this._urlService.Increment(hash), MyBitlyResources.GetException);
+            Assert.AreEqual(MyBitlyResources.EMPTY_SHORT_URL, ex.Code);
             Assert.AreEqual(103, ex.StatusCode);
         }
 

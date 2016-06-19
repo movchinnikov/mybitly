@@ -135,8 +135,8 @@
   <data name="INVALID_REQUEST" xml:space="preserve">
     <value>INVALID_REQUEST</value>
   </data>
-  <data name="UNKNOW_EXCEPTION" xml:space="preserve">
-    <value>UNKNOW_EXCEPTION</value>
+  <data name="TECH_EXCEPTION" xml:space="preserve">
+    <value>TECH_EXCEPTION</value>
   </data>
   <data name="ShortenUrlException" xml:space="preserve">
     <value>Не удалось сократить ссылку.</value>
@@ -144,16 +144,16 @@
   <data name="UrlIsNullOrEmptyException" xml:space="preserve">
     <value>Укажите ссылку.</value>
   </data>
-  <data name="HashIsNullOrEmptyException" xml:space="preserve">
-    <value>Укажите короткую ссылку.</value>
+  <data name="GetException" xml:space="preserve">
+    <value>Не удалось получаить информацию о ссылке.</value>
   </data>
   <data name="NotFoundException" xml:space="preserve">
     <value>Ссылка не найдена.</value>
   </data>
-  <data name="InvalidRequestException" xml:space="preserve">
-    <value>Некорректный запрос.</value>
+  <data name="GetListException" xml:space="preserve">
+    <value>Не удалось получить записи.</value>
   </data>
-  <data name="UnknowException" xml:space="preserve">
-    <value>Не известная ошибка.</value>
+  <data name="TechnicalException" xml:space="preserve">
+    <value>Техническая ошибка, повторите запрос позже.</value>
   </data>
 </root>

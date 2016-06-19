@@ -1,6 +1,5 @@
 ﻿namespace MyBitly.DAL.UnitOfWork
 {
-    using System;
     using System.Reflection;
     using Attributes;
     using Castle.DynamicProxy;
@@ -30,15 +29,8 @@
                 EfUnitOfWork.Current = new EfUnitOfWork(this._factory);
                 EfUnitOfWork.Current.BeginTransaction(unitOfWorkAttr.IsolationLevel);
 
-                try
-                {
-                    invocation.Proceed();
-                    EfUnitOfWork.Current.Commit();
-                }
-                catch (Exception e)
-                {
-                    throw e;
-                }
+                invocation.Proceed();
+                EfUnitOfWork.Current.Commit();
             }
             finally
             {

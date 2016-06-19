@@ -26,12 +26,55 @@
             get { return this.Container.Resolve<IUrlRepository>(); }
         }
 
+        #region
+
         public ShortenResponse Shorten(string longUrl)
         {
-            if (string.IsNullOrWhiteSpace(longUrl))
-                throw new MyBitlyException(MyBitleResources.UrlIsNullOrEmptyException)
+            try
+            {
+                BeforeShorten(longUrl);
+
+                var title = GetPageTitle(longUrl);
+                UrlEntity entity = null;
+                try
                 {
-                    Code = MyBitleResources.EMPTY_ARG_URL,
+                    var hash = Guid.NewGuid().GetHashCode().ToString("x");
+                    entity = this.Repository.Create(new UrlEntity {LongUrl = longUrl, Hash = hash, Title = title});
+                }
+                catch (Exception e)
+                {
+                    throw new MyBitlyException(MyBitlyResources.ShortenUrlException)
+                    {
+                        Code = MyBitlyResources.EXCEPTION_STORAGE_URL,
+                        StatusCode = 102
+                    };
+                }
+
+                var response = (ShortenResponse) entity;
+                response.ShortUrl = string.Format("{0}/{1}", "http://localhost:21460", response.Hash);
+
+                return response;
+            }
+            catch (MyBitlyException)
+            {
+                throw;
+            }
+            catch (Exception e)
+            {
+                throw new MyBitlyException(MyBitlyResources.ShortenUrlException)
+                {
+                    Code = MyBitlyResources.TECH_EXCEPTION,
+                    StatusCode = 106
+                };
+            }
+        }
+
+        private static void BeforeShorten(string longUrl)
+        {
+            if (string.IsNullOrWhiteSpace(longUrl))
+                throw new MyBitlyException(MyBitlyResources.ShortenUrlException)
+                {
+                    Code = MyBitlyResources.EMPTY_ARG_URL,
                     StatusCode = 100
                 };
 
@@ -39,113 +82,144 @@
             var canCreateUrl = Uri.TryCreate(longUrl, UriKind.Absolute, out urlResult);
 
             if (!canCreateUrl)
-                throw new MyBitlyException(MyBitleResources.ShortenUrlException)
+                throw new MyBitlyException(MyBitlyResources.ShortenUrlException)
                 {
-                    Code = MyBitleResources.INVALID_ARG_URL,
+                    Code = MyBitlyResources.INVALID_ARG_URL,
                     StatusCode = 101
                 };
-
-            var title = GetPageTitle(longUrl);
-            UrlEntity entity = null;
-            try
-            {
-                var hash = Guid.NewGuid().GetHashCode().ToString("x");
-                entity = this.Repository.Create(new UrlEntity { LongUrl = longUrl, Hash = hash, Title = title });
-            }
-            catch (Exception e)
-            {
-                throw new MyBitlyException(MyBitleResources.ShortenUrlException)
-                {
-                    Code = MyBitleResources.EXCEPTION_STORAGE_URL,
-                    StatusCode = 102
-                };
-            }
-
-            var response = (ShortenResponse) entity;
-            response.ShortUrl = string.Format("{0}/{1}", "http://localhost:21460", response.Hash);
-
-            return response;
         }
+
+        #endregion
+
+        #region Get
 
         public ShortenResponse Get(string hash)
         {
-            if (string.IsNullOrWhiteSpace(hash))
-                throw new MyBitlyException(MyBitleResources.HashIsNullOrEmptyException)
+            try
+            {
+                BeforeGet(hash);
+
+                var entity = this.Repository.Get(hash);
+
+                if (entity == null)
+                    throw new MyBitlyException(MyBitlyResources.GetException)
+                    {
+                        Code = MyBitlyResources.URL_NOT_FOUND,
+                        StatusCode = 104
+                    };
+
+                var response = (ShortenResponse) entity;
+                response.ShortUrl = string.Format("{0}/{1}", "http://localhost:21460", response.Hash);
+
+                return response;
+            }
+            catch (MyBitlyException)
+            {
+                throw;
+            }
+            catch (Exception)
+            {
+                throw new MyBitlyException(MyBitlyResources.GetException)
                 {
-                    Code = MyBitleResources.EMPTY_SHORT_URL,
+                    Code = MyBitlyResources.TECH_EXCEPTION,
+                    StatusCode = 106
+                };
+            }
+        }
+
+        private static void BeforeGet(string hash)
+        {
+            if (string.IsNullOrWhiteSpace(hash))
+                throw new MyBitlyException(MyBitlyResources.GetException)
+                {
+                    Code = MyBitlyResources.EMPTY_SHORT_URL,
                     StatusCode = 103
                 };
-
-            var entity = this.Repository.Get(hash);
-
-            if (entity == null)
-                throw new MyBitlyException(MyBitleResources.NotFoundException)
-                {
-                    Code = MyBitleResources.URL_NOT_FOUND,
-                    StatusCode = 104
-                };
-
-            var response = (ShortenResponse)entity;
-            response.ShortUrl = string.Format("{0}/{1}", "http://localhost:21460", response.Hash);
-
-            return response;
         }
+
+        #endregion
+
+        #region GetList
 
         public ListResponse LinkHistory(UrlHistoryRequest request)
         {
-            if (request == null)
-                throw new MyBitlyException(MyBitleResources.InvalidRequestException)
+            try
+            {
+                var filter = BeforeGetList(request);
+
+                var entities = this.Repository.GetList(filter);
+
+                if (entities == null || entities.Data == null)
+                    throw new MyBitlyException(MyBitlyResources.GetListException)
+                    {
+                        Code = MyBitlyResources.TECH_EXCEPTION,
+                        StatusCode = 106
+                    };
+
+                return new ListResponse
                 {
-                    Code = MyBitleResources.INVALID_REQUEST,
+                    Data = entities.Data.Select(x =>
+                    {
+                        var response = (ShortenResponse) x;
+                        response.ShortUrl = string.Format("{0}/{1}", "http://localhost:21460", response.Hash);
+
+                        return response;
+                    }),
+                    Count = entities.TotalCount
+                };
+            }
+            catch (MyBitlyException)
+            {
+                throw;
+            }
+            catch (Exception)
+            {
+                throw new MyBitlyException(MyBitlyResources.GetListException)
+                {
+                    Code = MyBitlyResources.TECH_EXCEPTION,
+                    StatusCode = 106
+                };
+            }
+        }
+
+        private static UrlListFilter BeforeGetList(UrlHistoryRequest request)
+        {
+            if (request == null)
+                throw new MyBitlyException(MyBitlyResources.GetListException)
+                {
+                    Code = MyBitlyResources.INVALID_REQUEST,
                     StatusCode = 105
                 };
 
             var filter = BuildListFilter(request);
 
             if (!filter.IsCorrect())
-                throw new MyBitlyException(MyBitleResources.InvalidRequestException)
+                throw new MyBitlyException(MyBitlyResources.GetListException)
                 {
-                    Code = MyBitleResources.INVALID_REQUEST,
+                    Code = MyBitlyResources.INVALID_REQUEST,
                     StatusCode = 105
                 };
 
-            var entities = this.Repository.GetList(filter);
-
-            if (entities == null || entities.Data == null)
-                throw new MyBitlyException(MyBitleResources.UNKNOW_EXCEPTION)
-                {
-                    Code = MyBitleResources.UNKNOW_EXCEPTION,
-                    StatusCode = 106
-                };
-
-            return new ListResponse
-            {
-                Data = entities.Data.Select(x => 
-                {
-                    var response = (ShortenResponse)x;
-                    response.ShortUrl = string.Format("{0}/{1}", "http://localhost:21460", response.Hash);
-
-                    return response;
-                }),
-                Count = entities.TotalCount
-            };
+            return filter;
         }
+
+        #endregion
 
         public ShortenResponse Increment(string hash)
         {
             if (string.IsNullOrWhiteSpace(hash))
-                throw new MyBitlyException(MyBitleResources.HashIsNullOrEmptyException)
+                throw new MyBitlyException(MyBitlyResources.GetException)
                 {
-                    Code = MyBitleResources.EMPTY_SHORT_URL,
+                    Code = MyBitlyResources.EMPTY_SHORT_URL,
                     StatusCode = 103
                 };
 
             var entity = this.Repository.Increment(hash);
 
             if (entity == null)
-                throw new MyBitlyException(MyBitleResources.NotFoundException)
+                throw new MyBitlyException(MyBitlyResources.NotFoundException)
                 {
-                    Code = MyBitleResources.URL_NOT_FOUND,
+                    Code = MyBitlyResources.URL_NOT_FOUND,
                     StatusCode = 104
                 };
 

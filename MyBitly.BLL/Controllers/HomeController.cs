@@ -4,6 +4,7 @@
     using Base;
     using Castle.Windsor;
     using Services;
+    using Utils;
 
     public class HomeController : BaseController
     {
@@ -25,6 +26,8 @@
             try
             {
                 var response = this._urlService.Get(hash);
+                Helper.ShallowExceptions(() => this._urlService.Increment(hash));
+
                 this._urlService.Increment(hash);
                 return Redirect(response.LongUrl);
             }

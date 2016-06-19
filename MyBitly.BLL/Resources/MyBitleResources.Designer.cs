@@ -22,14 +22,14 @@ namespace MyBitly.BLL.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class MyBitleResources {
+    public class MyBitlyResources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal MyBitleResources() {
+        internal MyBitlyResources() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace MyBitly.BLL.Resources {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("MyBitly.BLL.Resources.MyBitleResources", typeof(MyBitleResources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("MyBitly.BLL.Resources.MyBitleResources", typeof(MyBitlyResources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -88,11 +88,20 @@ namespace MyBitly.BLL.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Укажите короткую ссылку..
+        ///   Looks up a localized string similar to Не удалось получаить информацию о ссылке..
         /// </summary>
-        public static string HashIsNullOrEmptyException {
+        public static string GetException {
             get {
-                return ResourceManager.GetString("HashIsNullOrEmptyException", resourceCulture);
+                return ResourceManager.GetString("GetException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Не удалось получить записи..
+        /// </summary>
+        public static string GetListException {
+            get {
+                return ResourceManager.GetString("GetListException", resourceCulture);
             }
         }
         
@@ -115,15 +124,6 @@ namespace MyBitly.BLL.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Некорректный запрос..
-        /// </summary>
-        public static string InvalidRequestException {
-            get {
-                return ResourceManager.GetString("InvalidRequestException", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Ссылка не найдена..
         /// </summary>
         public static string NotFoundException {
@@ -142,20 +142,20 @@ namespace MyBitly.BLL.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to UNKNOW_EXCEPTION.
+        ///   Looks up a localized string similar to TECH_EXCEPTION.
         /// </summary>
-        public static string UNKNOW_EXCEPTION {
+        public static string TECH_EXCEPTION {
             get {
-                return ResourceManager.GetString("UNKNOW_EXCEPTION", resourceCulture);
+                return ResourceManager.GetString("TECH_EXCEPTION", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Не известная ошибка..
+        ///   Looks up a localized string similar to Техническая ошибка, повторите запрос позже..
         /// </summary>
-        public static string UnknowException {
+        public static string TechnicalException {
             get {
-                return ResourceManager.GetString("UnknowException", resourceCulture);
+                return ResourceManager.GetString("TechnicalException", resourceCulture);
             }
         }
         

@@ -95,6 +95,7 @@
     <Compile Include="Utils\CustomControllerFactory.cs" />
     <Compile Include="Utils\CustomDependencyResolver.cs" />
     <Compile Include="Utils\CustomDependencyScope.cs" />
+    <Compile Include="Utils\Helper.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\MyBitleResources.resx">
