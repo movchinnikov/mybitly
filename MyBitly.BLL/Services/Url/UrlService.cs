@@ -6,21 +6,24 @@
     using System.Net;
     using System.Text;
     using System.Text.RegularExpressions;
-    using System.Threading;
     using System.Threading.Tasks;
     using Castle.Windsor;
+    using Common.Params;
+    using Common.Resources;
     using DAL.Entities;
     using DAL.Filters;
     using DAL.Repositories;
     using Exceptions;
     using Models;
-    using Resources;
 
     public class UrlService : BaseService, IUrlService
     {
-        public UrlService(IWindsorContainer container)
+        private readonly IParamsHelper _paramsHelper;
+
+        public UrlService(IWindsorContainer container, IParamsHelper paramsHelper)
             : base(container)
         {
+            this._paramsHelper = paramsHelper;
         }
 
         private IUrlRepository Repository
@@ -54,7 +57,7 @@
                 this.SetPageTitle(entity);
 
                 var response = (ShortenResponse) entity;
-                response.ShortUrl = string.Format("{0}/{1}", "http://localhost:21460", response.Hash);
+                response.ShortUrl = string.Format("{0}/{1}", this._paramsHelper.ShortDomen, response.Hash);
 
                 return response;
             }
@@ -121,7 +124,7 @@
                     };
 
                 var response = (ShortenResponse) entity;
-                response.ShortUrl = string.Format("{0}/{1}", "http://localhost:21460", response.Hash);
+                response.ShortUrl = string.Format("{0}/{1}", this._paramsHelper.ShortDomen, response.Hash);
 
                 return response;
             }
@@ -173,7 +176,7 @@
                     Data = entities.Data.Select(x =>
                     {
                         var response = (ShortenResponse) x;
-                        response.ShortUrl = string.Format("{0}/{1}", "http://localhost:21460", response.Hash);
+                        response.ShortUrl = string.Format("{0}/{1}", this._paramsHelper.ShortDomen, response.Hash);
 
                         return response;
                     }),
@@ -236,7 +239,7 @@
                 };
 
             var response = (ShortenResponse)entity;
-            response.ShortUrl = string.Format("{0}/{1}", "http://localhost:21460", response.Hash);
+            response.ShortUrl = string.Format("{0}/{1}", this._paramsHelper.ShortDomen, response.Hash);
 
             return response;
         }

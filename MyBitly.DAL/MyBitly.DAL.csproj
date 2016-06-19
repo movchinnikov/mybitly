@@ -88,6 +88,12 @@
       <DependentUpon>201606191201386_AddUrlParameters.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MyBitly.Common\MyBitly.Common.csproj">
+      <Project>{903e53a3-dc33-4833-b41c-17a8e04319be}</Project>
+      <Name>MyBitly.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

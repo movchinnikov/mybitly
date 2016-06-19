@@ -5,6 +5,7 @@
     using Castle.MicroKernel.Registration;
     using Castle.MicroKernel.SubSystems.Configuration;
     using Castle.Windsor;
+    using Common.Params;
     using Services;
 
     public class BllInstaller : IWindsorInstaller
@@ -15,7 +16,8 @@
             container.Register(Classes.FromThisAssembly().BasedOn<ApiController>().LifestyleTransient());
 
             container.Register(
-                Component.For<IUrlService>().ImplementedBy<UrlService>().LifestyleSingleton()
+                Component.For<IUrlService>().ImplementedBy<UrlService>().LifestyleSingleton(),
+                Component.For<IParamsHelper>().ImplementedBy<ParamsHelper>().LifestyleSingleton()
                 );
         }
     }

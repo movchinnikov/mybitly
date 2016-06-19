@@ -1,17 +1,15 @@
 ﻿namespace MyBitly.DAL
 {
-    using System;
     using System.Data.Entity;
+    using Common.Params;
     using Entities;
 
     public class MyBitlyContext : DbContext
     {
-        public MyBitlyContext() : base("Server=OMA-PC;Database=mybitly;User Id=sa;Password=7777777;")
+        public MyBitlyContext(IParamsHelper paramsHelper)
         {
-            _guid = Guid.NewGuid();
+            this.Database.Connection.ConnectionString = paramsHelper.ConnectionString;
         }
-
-        private Guid _guid;
 
         public virtual DbSet<UrlEntity> Urls { get; set; } 
     }

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MyBitly.BLL.Resources {
+namespace MyBitly.Common.Resources {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace MyBitly.BLL.Resources {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("MyBitly.BLL.Resources.MyBitleResources", typeof(MyBitlyResources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("MyBitly.Common.Resources.MyBitlyResources", typeof(MyBitlyResources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -57,6 +57,15 @@ namespace MyBitly.BLL.Resources {
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Не указана строка подключения..
+        /// </summary>
+        public static string ConnectionStringNotConfigure {
+            get {
+                return ResourceManager.GetString("ConnectionStringNotConfigure", resourceCulture);
             }
         }
         
@@ -129,6 +138,15 @@ namespace MyBitly.BLL.Resources {
         public static string NotFoundException {
             get {
                 return ResourceManager.GetString("NotFoundException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Не указан короткий домен..
+        /// </summary>
+        public static string ShortDomenNotConfigure {
+            get {
+                return ResourceManager.GetString("ShortDomenNotConfigure", resourceCulture);
             }
         }
         

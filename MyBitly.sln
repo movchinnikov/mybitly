@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyBitly.Tests", "MyBitly.Te
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyBitly.DAL", "MyBitly.DAL\MyBitly.DAL.csproj", "{4A8774D7-15EB-4178-97BF-38293EF4955C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyBitly.Common", "MyBitly.Common\MyBitly.Common.csproj", "{903E53A3-DC33-4833-B41C-17A8E04319BE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +33,10 @@ Global
 		{4A8774D7-15EB-4178-97BF-38293EF4955C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4A8774D7-15EB-4178-97BF-38293EF4955C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4A8774D7-15EB-4178-97BF-38293EF4955C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{903E53A3-DC33-4833-B41C-17A8E04319BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{903E53A3-DC33-4833-B41C-17A8E04319BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{903E53A3-DC33-4833-B41C-17A8E04319BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{903E53A3-DC33-4833-B41C-17A8E04319BE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
