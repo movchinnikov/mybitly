@@ -145,7 +145,7 @@
     <value>Укажите ссылку.</value>
   </data>
   <data name="GetException" xml:space="preserve">
-    <value>Не удалось получаить информацию о ссылке.</value>
+    <value>Не удалось получить информацию о ссылке.</value>
   </data>
   <data name="NotFoundException" xml:space="preserve">
     <value>Ссылка не найдена.</value>

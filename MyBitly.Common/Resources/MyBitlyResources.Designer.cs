@@ -97,7 +97,7 @@ namespace MyBitly.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Не удалось получаить информацию о ссылке..
+        ///   Looks up a localized string similar to Не удалось получить информацию о ссылке..
         /// </summary>
         public static string GetException {
             get {
