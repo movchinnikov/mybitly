@@ -1,17 +1,26 @@
-﻿<div class="link-container">
+﻿<h1>Созданные Вами ссылки</h1>
+
+<div class="link-container" data-ng-if="!!links && links.length > 0 && loadComplete">
     <ul id="anon_history" class="list-group anon_history">
         <li id="{{link.hash}}" data-ng-repeat="link in links" class="list-group-item">
             <div class="unauth-title">
                 <a class="article-title" href="{{link.long_url}}" target="_blank">{{link.title}}</a>
-                <span class="glyphicon glyphicon-exclamation-sign">{{link.create_date | date:'dd MMMM yyyy HH:mm'}}</span>
+                <span>{{link.create_date | date:'dd MMMM yyyy HH:mm'}}</span>
             </div>
             <div class="unauth-title-url">
                 <a class="article-title smaller" href="{{link.long_url}}" target="_blank">{{link.long_url}}</a>
             </div>
             <div class="unauth-short-url">
-                <a class="short-url"  href="{{link.short_url}}" target="_blank">{{link.short_url}}</a>
+                <a class="short-url" href="{{link.short_url}}" target="_blank">{{link.short_url}}</a>
                 <span>{{link.clicks}}</span>
+            </div>
+            <div>
+                <button class="btn btn-primary btn-xs" data-clipboard="" data-supported="supported" data-on-copied="copySuccess(link.short_url)" data-on-error="copyFail(err)">Скопировать</button>
             </div>
         </li>
     </ul>
+</div>
+
+<div class="link-container" data-ng-if="links.length == 0 && loadComplete">
+    <span>Ссылок не найдено</span>
 </div>

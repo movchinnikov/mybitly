@@ -23,6 +23,7 @@
 
     <div data-ng-if="!!shortUrl">
         <a href="{{shortUrl}}" target="_blank">{{shortUrl}}</a>
+        <button class="btn btn-primary btn-xs" data-clipboard="" data-supported="supported"  data-on-copied="copySuccess()" data-on-error="copyFail(err)">Скопировать</button>
     </div>
 
     <div><a href="#/mylinks">Ранее созданные ссылки</a></div>
