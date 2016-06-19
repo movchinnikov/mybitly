@@ -1,5 +1,6 @@
 ﻿namespace MyBitly.DAL.Entities
 {
+    using System;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
@@ -13,5 +14,15 @@
 
         [Required]
         public string LongUrl { get; set; }
+
+        [Required]
+        public string Title { get; set; }
+
+        [Required]
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        public DateTime CreateDate { get; set; }
+
+        [Required]
+        public int Clicks { get; set; }
     }
 }

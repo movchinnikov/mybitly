@@ -1,6 +1,5 @@
 ﻿namespace MyBitly.Tests.Base
 {
-    using System;
     using System.Transactions;
     using BLL.Exceptions;
     using Castle.MicroKernel.Registration;

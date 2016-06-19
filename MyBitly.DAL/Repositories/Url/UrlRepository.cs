@@ -1,45 +1,70 @@
 ﻿namespace MyBitly.DAL.Repositories
 {
-    using System.Collections.Generic;
     using System.Data.Entity;
+    using System.Data.Entity.Infrastructure;
     using System.Linq;
     using Attributes;
     using Entities;
     using Filters;
     using Models;
+    using UnitOfWork;
 
     public class UrlRepository : IUrlRepository
     {
-        private readonly DbSet<UrlEntity> _dbSet;
-
-        public UrlRepository(DbContext context)
-        {
-            this._dbSet = context.Set<UrlEntity>();
-        }
+        protected DbContext Session { get { return EfUnitOfWork.Current.Session; } }
 
         [UnitOfWork]
         public UrlEntity Create(UrlEntity entity)
         {
-            return this._dbSet.Add(entity);
+            return this.Session.Set<UrlEntity>().Add(entity);
         }
 
         [UnitOfWork]
         public UrlEntity Get(string hash)
         {
-            return this._dbSet.FirstOrDefault(x => x.Hash == hash);
+            return this.Session.Set<UrlEntity>().FirstOrDefault(x => x.Hash == hash);
         }
 
         [UnitOfWork]
         public ListPage<UrlEntity> GetList(UrlListFilter filter)
         {
-            var totalCount = filter.ApplyCustom(this._dbSet).Select(x=>x.Id).Count();
-            var data = filter.Apply(this._dbSet).ToArray();
+            var dbSet = this.Session.Set<UrlEntity>();
+
+            var totalCount = filter.ApplyCustom(dbSet).Select(x => x.Id).Count();
+            var data = filter.Apply(dbSet).ToArray();
 
             return new ListPage<UrlEntity>
             {
                 Data = data,
                 TotalCount = totalCount
             };
+        }
+
+        [UnitOfWork]
+        public UrlEntity Increment(string hash)
+        {
+            var entity = this.Session.Set<UrlEntity>().FirstOrDefault(x => x.Hash == hash);
+            if (entity == null) return null;
+            ++entity.Clicks;
+
+            bool saveFailed;
+            do
+            {
+                saveFailed = false;
+
+                try
+                {
+                    this.Session.SaveChanges();
+                }
+                catch (DbUpdateConcurrencyException ex)
+                {
+                    saveFailed = true;
+                    ex.Entries.Single().Reload();
+                }
+
+            } while (saveFailed);
+
+            return entity;
         }
     }
 }

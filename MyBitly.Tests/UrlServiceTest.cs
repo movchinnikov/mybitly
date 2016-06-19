@@ -2,7 +2,6 @@
 {
     using System;
     using System.Data.Entity;
-    using System.Diagnostics;
     using System.Linq;
     using Base;
     using BLL.Models;
@@ -11,6 +10,7 @@
     using Castle.MicroKernel.Registration;
     using DAL;
     using DAL.Entities;
+    using DAL.Factory;
     using DAL.Repositories;
     using DAL.UnitOfWork;
     using NUnit.Framework;
@@ -19,9 +19,7 @@
     public class UrlServiceTest : BaseTest
     {
         private IUrlService _urlService;
-
-        private DbSet<UrlEntity> _dbSet;
-        private DbContext _dbContext;
+        private ISessionFactory _factory;
         
         [SetUp]
         public override void SetUp()
@@ -30,18 +28,15 @@
 
             this.Container.Register(
                 Component.For<IUrlService>().ImplementedBy<UrlService>().LifestyleTransient(),
-                Component.For<DbContext>().ImplementedBy<MyBitlyContext>().LifestylePerThread(),
+                Component.For<ISessionFactory>().ImplementedBy<SessionFactory>().LifestyleSingleton(),
+                Component.For<DbContext>().ImplementedBy<MyBitlyContext>().LifestyleTransient(),
                 Component.For<EfUnitOfWorkInterceptor>().LifestyleTransient(),
                 Component.For<IUrlRepository>().ImplementedBy<UrlRepository>()
-                    .Interceptors<EfUnitOfWorkInterceptor>().LifestylePerThread()
+                    .Interceptors<EfUnitOfWorkInterceptor>().LifestyleTransient()
                 );
 
             this._urlService = this.Container.Resolve<IUrlService>();
-
-            this._dbContext = this.Container.Resolve<DbContext>();
-            this._dbSet = this._dbContext.Set<UrlEntity>();
-
-            this._dbContext.Database.Log = sql => Debug.WriteLine(sql);
+            this._factory = this.Container.Resolve<ISessionFactory>();
         }
 
         [TestCase("localhost")]
@@ -88,11 +83,16 @@
             Assert.AreEqual(longUrl, response.LongUrl);
             Assert.IsNotNull(response.Hash);
             Assert.IsNotEmpty(response.Hash);
-            
-            var dbResponse = this._dbSet.FirstOrDefault(x => x.Hash == response.Hash);
-            Assert.NotNull(dbResponse);
-            Assert.AreEqual(response.Hash, dbResponse.Hash);
-            Assert.AreEqual(response.LongUrl, dbResponse.LongUrl);
+
+            using (var context = this._factory.OpenSession())
+            {
+                var dbSet = context.Set<UrlEntity>();
+
+                var dbResponse = dbSet.FirstOrDefault(x => x.Hash == response.Hash);
+                Assert.NotNull(dbResponse);
+                Assert.AreEqual(response.Hash, dbResponse.Hash);
+                Assert.AreEqual(response.LongUrl, dbResponse.LongUrl);
+            }
         }
 
         [Test]
@@ -116,11 +116,14 @@
         public void Get_Positive()
         {
             const string hash = "тестовый";
-
-            var entity = new UrlEntity {Hash = hash, LongUrl = "http://google.ru"};
-            this._dbSet.Add(entity);
-            this._dbContext.SaveChanges();
-
+            UrlEntity entity = null;
+            using (var context = this._factory.OpenSession())
+            {
+                var dbSet = context.Set<UrlEntity>();
+                entity = new UrlEntity { Hash = hash, LongUrl = "http://google.ru", Title = "Google" };
+                dbSet.Add(entity);
+                context.SaveChanges();
+            }
             var fromDb = this._urlService.Get(hash);
 
             Assert.NotNull(fromDb);
@@ -179,13 +182,18 @@
         [Test]
         public void GetList_Positive()
         {
-            var entity = new UrlEntity { Hash = "googleru", LongUrl = "http://google.ru" };
-            this._dbSet.Add(entity);
-            entity = new UrlEntity { Hash = "vkrulink", LongUrl = "http://vk.ru" };
-            this._dbSet.Add(entity);
-            entity = new UrlEntity { Hash = "yandexru", LongUrl = "http://ya.ru" };
-            this._dbSet.Add(entity);
-            this._dbContext.SaveChanges();
+            using (var context = this._factory.OpenSession())
+            {
+                var dbSet = context.Set<UrlEntity>();
+
+                var entity = new UrlEntity {Hash = "googleru", LongUrl = "http://google.ru", Title = "Google"};
+                dbSet.Add(entity);
+                entity = new UrlEntity {Hash = "vkrulink", LongUrl = "http://vk.ru", Title = "Вконтакте"};
+                dbSet.Add(entity);
+                entity = new UrlEntity {Hash = "yandexru", LongUrl = "http://ya.ru", Title = "Яндекс"};
+                dbSet.Add(entity);
+                context.SaveChanges();
+            }
 
             var response = this._urlService.LinkHistory(new UrlHistoryRequest { Hashes = new[] { "googleru", "yandexru" } });
             Assert.NotNull(response);
@@ -209,13 +217,18 @@
         [Test]
         public void GetList_HasLimit_Positive()
         {
-            var entity = new UrlEntity { Hash = "googleru", LongUrl = "http://google.ru" };
-            this._dbSet.Add(entity);
-            entity = new UrlEntity { Hash = "vkrulink", LongUrl = "http://vk.ru" };
-            this._dbSet.Add(entity);
-            entity = new UrlEntity { Hash = "yandexru", LongUrl = "http://ya.ru" };
-            this._dbSet.Add(entity);
-            this._dbContext.SaveChanges();
+            using (var context = this._factory.OpenSession())
+            {
+                var dbSet = context.Set<UrlEntity>();
+
+                var entity = new UrlEntity {Hash = "googleru", LongUrl = "http://google.ru", Title = "Google"};
+                dbSet.Add(entity);
+                entity = new UrlEntity {Hash = "vkrulink", LongUrl = "http://vk.ru", Title = "Вконтакте"};
+                dbSet.Add(entity);
+                entity = new UrlEntity {Hash = "yandexru", LongUrl = "http://ya.ru", Title = "Яндекс"};
+                dbSet.Add(entity);
+                context.SaveChanges();
+            }
 
             var response = this._urlService.LinkHistory(new UrlHistoryRequest { Limit = 1, Hashes = new[] { "googleru", "yandexru" } });
             Assert.NotNull(response);
@@ -235,13 +248,18 @@
         [Test]
         public void GetList_HasOffset_Positive()
         {
-            var entity = new UrlEntity { Hash = "googleru", LongUrl = "http://google.ru" };
-            this._dbSet.Add(entity);
-            entity = new UrlEntity { Hash = "vkrulink", LongUrl = "http://vk.ru" };
-            this._dbSet.Add(entity);
-            entity = new UrlEntity { Hash = "yandexru", LongUrl = "http://ya.ru" };
-            this._dbSet.Add(entity);
-            this._dbContext.SaveChanges();
+            using (var context = this._factory.OpenSession())
+            {
+                var dbSet = context.Set<UrlEntity>();
+
+                var entity = new UrlEntity {Hash = "googleru", LongUrl = "http://google.ru", Title = "Google"};
+                dbSet.Add(entity);
+                entity = new UrlEntity {Hash = "vkrulink", LongUrl = "http://vk.ru", Title = "Вконтакте"};
+                dbSet.Add(entity);
+                entity = new UrlEntity {Hash = "yandexru", LongUrl = "http://ya.ru", Title = "Яндекс"};
+                dbSet.Add(entity);
+                context.SaveChanges();
+            }
 
             var response = this._urlService.LinkHistory(new UrlHistoryRequest { Offset = 1, Hashes = new[] { "googleru", "yandexru" } });
             Assert.NotNull(response);
@@ -261,13 +279,18 @@
         [Test]
         public void GetList_HasOffsetAndLimit_Positive()
         {
-            var entity = new UrlEntity { Hash = "googleru", LongUrl = "http://google.ru" };
-            this._dbSet.Add(entity);
-            entity = new UrlEntity { Hash = "vkrulink", LongUrl = "http://vk.ru" };
-            this._dbSet.Add(entity);
-            entity = new UrlEntity { Hash = "yandexru", LongUrl = "http://ya.ru" };
-            this._dbSet.Add(entity);
-            this._dbContext.SaveChanges();
+            using (var context = this._factory.OpenSession())
+            {
+                var dbSet = context.Set<UrlEntity>();
+
+                var entity = new UrlEntity {Hash = "googleru", LongUrl = "http://google.ru", Title = "Google"};
+                dbSet.Add(entity);
+                entity = new UrlEntity {Hash = "vkrulink", LongUrl = "http://vk.ru", Title = "Вконтакте"};
+                dbSet.Add(entity);
+                entity = new UrlEntity {Hash = "yandexru", LongUrl = "http://ya.ru", Title = "Яндекс"};
+                dbSet.Add(entity);
+                context.SaveChanges();
+            }
 
             var response = this._urlService.LinkHistory(new UrlHistoryRequest { Limit = 1, Offset = 1, Hashes = new[] { "googleru", "yandexru" } });
             Assert.NotNull(response);
@@ -292,6 +315,48 @@
             Assert.NotNull(response.Data);
             Assert.AreEqual(0, response.Data.Count());
             Assert.AreEqual(0, response.Count);
+        }
+
+        [Test]
+        public void Increment_NotExisitsHash_Negative()
+        {
+            var ex = InvokeAndAssertException(() => this._urlService.Increment("тестовый"), MyBitleResources.NotFoundException);
+            Assert.AreEqual(MyBitleResources.URL_NOT_FOUND, ex.Code);
+            Assert.AreEqual(104, ex.StatusCode);
+        }
+
+        [TestCase("")]
+        [TestCase(null)]
+        public void Increment_HashIsEmpty_Negative(string hash)
+        {
+            var ex = InvokeAndAssertException(() => this._urlService.Increment(hash), MyBitleResources.HashIsNullOrEmptyException);
+            Assert.AreEqual(MyBitleResources.EMPTY_SHORT_URL, ex.Code);
+            Assert.AreEqual(103, ex.StatusCode);
+        }
+
+        [Test]
+        public void Increment_Positive()
+        {
+            using (var context = this._factory.OpenSession())
+            {
+                var dbSet = context.Set<UrlEntity>();
+
+                var entity = new UrlEntity {Hash = "yandexru", LongUrl = "http://ya.ru", Title = "Яндекс"};
+                dbSet.Add(entity);
+                context.SaveChanges();
+            }
+
+            var response = this._urlService.Increment("yandexru");
+            Assert.NotNull(response);
+            Assert.AreEqual(1, response.Clicks);
+            
+            response = this._urlService.Increment("yandexru");
+            Assert.NotNull(response);
+            Assert.AreEqual(2, response.Clicks);
+
+            response = this._urlService.Increment("yandexru");
+            Assert.NotNull(response);
+            Assert.AreEqual(3, response.Clicks);
         }
     }
 }

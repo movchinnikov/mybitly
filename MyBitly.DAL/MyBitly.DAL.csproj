@@ -53,11 +53,17 @@
     <Compile Include="Entities\Base\Entity.cs" />
     <Compile Include="Entities\UrlEntity.cs" />
     <Compile Include="Extensions\QueryableExtensions.cs" />
+    <Compile Include="Factory\ISessionFactory.cs" />
+    <Compile Include="Factory\SessionFactory.cs" />
     <Compile Include="Filters\Base\BaseListFilter.cs" />
     <Compile Include="Filters\UrlListFilter.cs" />
     <Compile Include="Migrations\201606171413404_AddUrl.cs" />
     <Compile Include="Migrations\201606171413404_AddUrl.Designer.cs">
       <DependentUpon>201606171413404_AddUrl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201606191201386_AddUrlParameters.cs" />
+    <Compile Include="Migrations\201606191201386_AddUrlParameters.Designer.cs">
+      <DependentUpon>201606191201386_AddUrlParameters.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ListPage.cs" />
@@ -77,6 +83,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201606171413404_AddUrl.resx">
       <DependentUpon>201606171413404_AddUrl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201606191201386_AddUrlParameters.resx">
+      <DependentUpon>201606191201386_AddUrlParameters.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

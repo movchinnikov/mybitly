@@ -25,6 +25,7 @@
             try
             {
                 var response = this._urlService.Get(hash);
+                this._urlService.Increment(hash);
                 return Redirect(response.LongUrl);
             }
             finally

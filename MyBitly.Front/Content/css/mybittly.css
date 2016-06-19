@@ -24,6 +24,16 @@ a.article-title {
     width: 80%;
 }
 
+a.short-url {
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 80%;
+    font-size: 14px;
+    line-height: 17px;
+}
+
 a.article-title.smaller {
     color: #9b9b9b;
     font-size: 14px;

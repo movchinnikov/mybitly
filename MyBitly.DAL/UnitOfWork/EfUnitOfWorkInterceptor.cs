@@ -1,18 +1,18 @@
 ﻿namespace MyBitly.DAL.UnitOfWork
 {
     using System;
-    using System.Data.Entity;
     using System.Reflection;
     using Attributes;
     using Castle.DynamicProxy;
+    using Factory;
 
     public class EfUnitOfWorkInterceptor : IInterceptor
     {
-        private readonly DbContext _dbContext;
+        private readonly ISessionFactory _factory;
 
-        public EfUnitOfWorkInterceptor(DbContext dbContext)
+        public EfUnitOfWorkInterceptor(ISessionFactory factory)
         {
-            this._dbContext = dbContext;
+            this._factory = factory;
         }
 
         public void Intercept(IInvocation invocation)
@@ -27,7 +27,7 @@
 
             try
             {
-                EfUnitOfWork.Current = new EfUnitOfWork(this._dbContext);
+                EfUnitOfWork.Current = new EfUnitOfWork(this._factory);
                 EfUnitOfWork.Current.BeginTransaction(unitOfWorkAttr.IsolationLevel);
 
                 try
@@ -42,7 +42,11 @@
             }
             finally
             {
-                EfUnitOfWork.Current = null;
+                if (EfUnitOfWork.Current != null)
+                {
+                    EfUnitOfWork.Current.Dispose();
+                    EfUnitOfWork.Current = null;
+                }
             }
         }
     }

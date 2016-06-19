@@ -7,5 +7,6 @@
         ShortenResponse Shorten(string longUrl);
         ShortenResponse Get(string hash);
         ListResponse LinkHistory(UrlHistoryRequest request);
+        ShortenResponse Increment(string hash);
     }
 }

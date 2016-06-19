@@ -3,16 +3,20 @@
     using System;
     using System.Data;
     using System.Data.Entity;
+    using Factory;
 
     public class EfUnitOfWork : IUnitOfWork
     {
-        private readonly DbContext _dbContext;
         private DbContextTransaction _transaction;
+        private bool _disposed;
+        private readonly ISessionFactory _factory;
 
-        public EfUnitOfWork(DbContext dbContext)
+        public EfUnitOfWork(ISessionFactory sessionFactory)
         {
-            this._dbContext = dbContext;
+            this._factory = sessionFactory;
         }
+
+        public DbContext Session { get; private set; }
 
         public static EfUnitOfWork Current
         {
@@ -29,12 +33,13 @@
 
         public void BeginTransaction(IsolationLevel lvl)
         {
-            this._transaction = this._dbContext.Database.BeginTransaction(lvl);
+            this.Session = this._factory.OpenSession();
+            this._transaction = this.Session.Database.BeginTransaction(lvl);
         }
 
         public void Commit()
         {
-            this._dbContext.SaveChanges();
+            this.Session.SaveChanges();
             this._transaction.Commit();
             this._transaction.Dispose();
         }
@@ -43,6 +48,24 @@
         {
             this._transaction.Rollback();
             this._transaction.Dispose();
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        public virtual void Dispose(bool disposing)
+        {
+            if (!this._disposed)
+            {
+                if (disposing)
+                {
+                    this.Session.Dispose();
+                }
+            }
+            this._disposed = true;
         }
     }
 }

@@ -125,6 +125,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\css\bootstrap.min.css" />
+    <Content Include="Content\css\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Content\css\mybittly.css" />
     <Content Include="Content\js\app\app.js" />
     <Content Include="Content\js\app\home\controllers\homeController.js" />
@@ -134,6 +135,7 @@
     <Content Include="Content\js\app\home\templates\index.html" />
     <Content Include="Content\js\app\home\templates\mylinks.html" />
     <Content Include="Content\js\vendor\angular-cookies.min.js" />
+    <Content Include="Content\js\vendor\angular-locale_ru-ru.min.js" />
     <Content Include="Content\js\vendor\angular-route.js" />
     <Content Include="Content\js\vendor\angular.js" />
     <Content Include="favicon.ico" />
@@ -151,7 +153,9 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Content\css\fonts\glyphicons-halflings-regular.eot" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>
@@ -168,6 +172,15 @@
       <Project>{09abc70f-697c-47a2-9c67-ae83f9e424ab}</Project>
       <Name>MyBitly.Tests</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\css\fonts\glyphicons-halflings-regular.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\css\fonts\glyphicons-halflings-regular.woff" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\css\fonts\glyphicons-halflings-regular.woff2" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

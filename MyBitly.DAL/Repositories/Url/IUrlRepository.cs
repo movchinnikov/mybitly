@@ -9,5 +9,6 @@
         UrlEntity Create(UrlEntity entity);
         UrlEntity Get(string hash);
         ListPage<UrlEntity> GetList(UrlListFilter filter);
+        UrlEntity Increment(string hash);
     }
 }
