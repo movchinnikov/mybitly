@@ -140,8 +140,8 @@
     <Content Include="Content\js\vendor\angular-loading-bar.min.js" />
     <Content Include="Content\js\vendor\angular-locale_ru-ru.min.js" />
     <Content Include="Content\js\vendor\angular-notify.min.js" />
-    <Content Include="Content\js\vendor\angular-route.js" />
-    <Content Include="Content\js\vendor\angular.js" />
+    <Content Include="Content\js\vendor\angular-route.min.js" />
+    <Content Include="Content\js\vendor\angular.min.js" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Web.config" />
