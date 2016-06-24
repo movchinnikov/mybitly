@@ -4,7 +4,7 @@
     using System.Net.Http;
     using System.Net.Http.Formatting;
     using System.Web.Http.Filters;
-    using Exceptions;
+    using Common.Exceptions;
     using Models;
 
     public class ApiExceptionFilterAttribute : ExceptionFilterAttribute

@@ -3,8 +3,8 @@
     using System.Transactions;
     using Castle.MicroKernel.Registration;
     using Castle.Windsor;
+    using Common.Exceptions;
     using NUnit.Framework;
-    using BLL.Exceptions;
 
     public class TestBase
     {

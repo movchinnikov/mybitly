@@ -35,6 +35,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Exceptions\MyBitlyException.cs" />
     <Compile Include="Params\IParamsHelper.cs" />
     <Compile Include="Params\ParamsHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

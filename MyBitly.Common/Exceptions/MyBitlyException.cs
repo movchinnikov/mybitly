@@ -1,4 +1,4 @@
-﻿namespace MyBitly.BLL.Exceptions
+﻿namespace MyBitly.Common.Exceptions
 {
     using System;
 

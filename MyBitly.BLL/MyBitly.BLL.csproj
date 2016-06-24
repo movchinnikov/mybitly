@@ -101,7 +101,6 @@
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="ExceptionHandling\ApiExceptionFilterAttribute.cs" />
-    <Compile Include="Exceptions\MyBitlyException.cs" />
     <Compile Include="Models\ExceptionResponse.cs" />
     <Compile Include="Models\UrlHistoryRequest.cs" />
     <Compile Include="Models\ListResponse.cs" />

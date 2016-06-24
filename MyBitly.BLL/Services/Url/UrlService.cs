@@ -8,12 +8,12 @@
     using System.Text.RegularExpressions;
     using System.Threading.Tasks;
     using Castle.Windsor;
+    using Common.Exceptions;
     using Common.Params;
     using Common.Resources;
     using DAL.Entities;
     using DAL.Filters;
     using DAL.Repositories;
-    using Exceptions;
     using Models;
 
     public class UrlService : ServiceBase, IUrlService
