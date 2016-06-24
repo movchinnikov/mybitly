@@ -5,7 +5,7 @@
     using System.ComponentModel.DataAnnotations.Schema;
 
     [Table("Url")]
-    public class UrlEntity : Entity
+    public class UrlEntity : EntityBase
     {
         [StringLength(8)]
         [Required]

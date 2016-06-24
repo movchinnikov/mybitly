@@ -7,6 +7,7 @@
     public class ParamsHelper : IParamsHelper
     {
         private string _shortDomen;
+
         private string _connectionString;
 
         public string ShortDomen

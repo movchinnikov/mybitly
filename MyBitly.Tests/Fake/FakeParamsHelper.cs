@@ -16,14 +16,4 @@
             get { return this._paramsRaw.ShortDomen; }
         }
     }
-
-    public class ParamsRaw
-    {
-        public ParamsRaw()
-        {
-            ShortDomen = "http://mybitly.com";
-        }
-
-        public string ShortDomen { get; set; }
-    }
 }

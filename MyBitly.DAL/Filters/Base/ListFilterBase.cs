@@ -6,14 +6,25 @@
     using Entities;
     using Extensions;
 
-    public class BaseListFilter<TEntity>
-        where TEntity : Entity
+    public class ListFilterBase<TEntity>
+        where TEntity : EntityBase
     {
+        /// <summary>
+        /// Количество записей, которое необходимо вернуть с результатом
+        /// </summary>
         public int Limit { get; set; }
+
+        /// <summary>
+        /// Количество записей, которые необходимо пропустить
+        /// </summary>
         public int Offset { get; set; }
+
+        /// <summary>
+        /// Параметры сортировки
+        /// </summary>
         public SortParam[] SortParams { get; set; }
 
-        public BaseListFilter()
+        public ListFilterBase()
         {
             SortParams = new[] {new SortParam {Direction = ListSortDirection.Descending, Field = "Id"}};
         }
@@ -52,7 +63,14 @@
 
     public struct SortParam
     {
+        /// <summary>
+        /// Наименование поля для сортировки
+        /// </summary>
         public string Field { get; set; }
+
+        /// <summary>
+        /// Направление сортировки
+        /// </summary>
         public ListSortDirection Direction { get; set; }
     }
 }

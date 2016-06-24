@@ -3,12 +3,12 @@
     using System.Net.Http;
     using System.Net.Http.Formatting;
     using System.Web.Http;
-    using Base;
     using Castle.Windsor;
+    using Base;
     using Models;
     using Services;
 
-    public class UrlController : BaseApiController
+    public class UrlController : ApiControllerBase
     {
         private readonly IUrlService _urlService;
 

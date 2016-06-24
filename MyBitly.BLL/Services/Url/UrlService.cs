@@ -16,7 +16,7 @@
     using Exceptions;
     using Models;
 
-    public class UrlService : BaseService, IUrlService
+    public class UrlService : ServiceBase, IUrlService
     {
         private readonly IParamsHelper _paramsHelper;
 

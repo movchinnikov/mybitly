@@ -1,23 +1,25 @@
 ﻿namespace MyBitly.Tests.Base
 {
     using System.Transactions;
-    using BLL.Exceptions;
     using Castle.MicroKernel.Registration;
     using Castle.Windsor;
     using NUnit.Framework;
+    using BLL.Exceptions;
 
-    public class BaseTest
+    public class TestBase
     {
-        public IWindsorContainer Container;
+        protected IWindsorContainer Container;
+
         protected IWindsorContainer DefaultContainer;
+
         private TransactionScope _scope;
 
-        public BaseTest()
+        public TestBase()
         {
             this.DefaultContainer = new WindsorContainer();
         }
 
-        ~BaseTest()
+        ~TestBase()
         {
             this.DefaultContainer.Dispose();
         }

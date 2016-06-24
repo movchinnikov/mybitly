@@ -3,10 +3,8 @@
     using System;
     using System.Data.Entity;
     using System.Linq;
-    using Base;
-    using BLL.Models;
-    using BLL.Services;
     using Castle.MicroKernel.Registration;
+    using NUnit.Framework;
     using Common.Params;
     using Common.Resources;
     using DAL;
@@ -14,11 +12,13 @@
     using DAL.Factory;
     using DAL.Repositories;
     using DAL.UnitOfWork;
+    using BLL.Models;
+    using BLL.Services;
+    using Base;
     using Fake;
-    using NUnit.Framework;
-
+    
     [TestFixture]
-    public class UrlServiceTest : BaseTest
+    public class UrlServiceTest : TestBase
     {
         private IUrlService _urlService;
         private ISessionFactory _factory;

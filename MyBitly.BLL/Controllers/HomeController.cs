@@ -1,12 +1,13 @@
 ﻿namespace MyBitly.BLL.Controllers
 {
     using System.Web.Mvc;
-    using Base;
     using Castle.Windsor;
+    using Base;
     using Services;
     using Utils;
+    using ControllerBase = Base.ControllerBase;
 
-    public class HomeController : BaseController
+    public class HomeController : ControllerBase
     {
         private readonly IUrlService _urlService;
 

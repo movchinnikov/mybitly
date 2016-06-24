@@ -3,11 +3,11 @@
     using System.Web.Http;
     using Castle.Windsor;
 
-    public class BaseApiController : ApiController
+    public abstract class ApiControllerBase : ApiController
     {
         protected IWindsorContainer Container { get; private set; }
 
-        public BaseApiController(IWindsorContainer container)
+        protected ApiControllerBase(IWindsorContainer container)
         {
             this.Container = container;
         }

@@ -10,6 +10,7 @@
     public class CustomDependencyScope : IDependencyScope
     {
         private readonly IKernel _container;
+
         private readonly IDisposable _scope;
 
         public CustomDependencyScope(IKernel container)

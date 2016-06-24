@@ -2,11 +2,11 @@
 {
     using Castle.Windsor;
 
-    public class BaseService
+    public abstract class ServiceBase
     {
         protected IWindsorContainer Container { get; private set; }
 
-        public BaseService(IWindsorContainer container)
+        protected ServiceBase(IWindsorContainer container)
         {
             this.Container = container;
         }

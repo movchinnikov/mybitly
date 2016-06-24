@@ -1,8 +1,8 @@
 ﻿namespace MyBitly.BLL.Models
 {
     using System;
-    using DAL.Entities;
     using Newtonsoft.Json;
+    using DAL.Entities;
 
     public class ShortenResponse
     {

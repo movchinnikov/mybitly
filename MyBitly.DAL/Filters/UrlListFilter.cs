@@ -4,8 +4,11 @@
     using System.Linq;
     using Entities;
 
-    public class UrlListFilter : BaseListFilter<UrlEntity>
+    public class UrlListFilter : ListFilterBase<UrlEntity>
     {
+        /// <summary>
+        /// Хэши записей, которые необходимо извлечь
+        /// </summary>
         public IEnumerable<string> Hashes { get; set; }
 
         public override bool IsCorrect()

@@ -3,11 +3,11 @@
     using System.Web.Mvc;
     using Castle.Windsor;
 
-    public class BaseController : Controller
+    public abstract class ControllerBase : Controller
     {
         protected IWindsorContainer Container { get; private set; }
 
-        public BaseController(IWindsorContainer container)
+        protected ControllerBase(IWindsorContainer container)
         {
             this.Container = container;
         }
