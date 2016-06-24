@@ -1,0 +1,25 @@
+Инструкция по настройке окружения для успешного прогона тестов на одной машине
+
+1. Копируем репозиторий на локальный компьютер. Например следующей командой 
+git clone https://github.com/movchinnikov/mybitly.git <destination-path>
+
+Так же возможно копирование zip-архива с сервера github.com по адресу https://github.com/movchinnikov/mybitly
+
+2. Запускаем MyBitly.sln в IDE (у автора Visual Studio 2012)
+
+3. Открываем "Manage Nuget Packages" для всего решения. Для этого кликаем правой кнопкой по решению и выбираем "Manage Nuget Packages for Solutions..."
+
+4. В открывшемся окне нажимаем "Restore" в верхнем правом углу.
+
+После окончания восстановления пакетов необходимо настроить базу данных и накатить на нее схему. 
+
+5. Необходимо в файле-конфигурации тестов MyBitly.Tests\App.config в секции "configuration\connectionStrings" в параметре с именем "MyBitly" 
+заменить значение "connectionString" на то, которое используете Вы
+
+5. Далее выбираем пункт меню "Tools-Nuget Package Manager-Package Manager Console". 
+Если необходимых пунктов меню нет - убедитесь, что у Вас установлен "Nuget Package Manager". Сделать это
+можно с помощью  Tools-Extensions and Updates..."
+
+6. В открывшейся консоли необходимо выбрать Default project в "MyBitly.DAL" и выполнить команду PM> Update-Database
+
+После выполненых настроек можно выполнить тесты из файла MyBitly.Tests\UrlServiceTest.cs

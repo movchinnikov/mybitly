@@ -1,29 +1,15 @@
 ﻿namespace MyBitly.DAL
 {
-    using System;
     using System.Data.Entity;
-    using Common.Exceptions;
-    using Common.Params;
-    using Common.Resources;
     using Entities;
+    using Utils.Helpers;
 
     public class MyBitlyContext : DbContext
     {
-        public MyBitlyContext(IParamsHelper paramsHelper)
+        public MyBitlyContext()
+            : base(ConnectionStringHelper.ConnectionString)
         {
-            try
-            {
-                this.Database.Connection.ConnectionString = paramsHelper.ConnectionString;
-            }
-            catch (Exception e)
-            {
-                throw new MyBitlyException(MyBitlyResources.TechnicalException)
-                {
-                    Code = MyBitlyResources.TECH_EXCEPTION,
-                    StatusCode = 106
-                };
-            }
-            
+           
         }
 
         public virtual DbSet<UrlEntity> Urls { get; set; } 

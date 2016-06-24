@@ -44,6 +44,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -75,6 +76,7 @@
     <Compile Include="UnitOfWork\EfUnitOfWorkInterceptor.cs" />
     <Compile Include="UnitOfWork\IUnitOfWork.cs" />
     <Compile Include="Utils\DalInstaller.cs" />
+    <Compile Include="Utils\Helpers\ConnectionStringHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -8,8 +8,6 @@
     {
         private string _shortDomen;
 
-        private string _connectionString;
-
         public string ShortDomen
         {
             get
@@ -23,22 +21,6 @@
                     throw new ArgumentException(MyBitlyResources.ShortDomenNotConfigure);
 
                 return this._shortDomen;
-            }
-        }
-
-        public string ConnectionString
-        {
-            get
-            {
-                if (!string.IsNullOrWhiteSpace(this._connectionString))
-                    return this._connectionString;
-
-                this._connectionString = ConfigurationManager.ConnectionStrings["MyBitly"].ConnectionString;
-
-                if (string.IsNullOrWhiteSpace(this._connectionString))
-                    throw new ArgumentException(MyBitlyResources.ConnectionStringNotConfigure);
-
-                return this._connectionString;
             }
         }
     }
