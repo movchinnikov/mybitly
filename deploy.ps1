@@ -1,0 +1,2 @@
+param([string]$DeployPath)
+MSBuild C:\Users\oma.FINIST-SOFT\Desktop\ItPlanet\mybitly\MyBitly.sln /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile=front-release /p:PublishUrl=$DeployPath
