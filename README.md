@@ -8,4 +8,4 @@
 
 ## Сборка с помощь deploy.ps1
 
->deploy.ps1 -DeployPath <deploy_path>
+>deploy.ps1 -DeployPath deploy_path
