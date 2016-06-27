@@ -1,19 +1,19 @@
 ﻿namespace MyBitly.BLL.Utils
 {
-    using System;
+	using System;
 
-    public class Helper
-    {
-        public static void ShallowExceptions(Action @delegate)
-        {
-            try
-            {
-                @delegate();
-            }
-            catch
-            {
-                // ignored
-            }
-        }
-    }
+	public class Helper
+	{
+		public static void ShallowExceptions(Action @delegate)
+		{
+			try
+			{
+				@delegate();
+			}
+			catch
+			{
+				// ignored
+			}
+		}
+	}
 }

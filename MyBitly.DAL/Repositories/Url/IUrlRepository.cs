@@ -1,19 +1,19 @@
 ﻿namespace MyBitly.DAL.Repositories
 {
-    using Entities;
-    using Filters;
-    using Models;
+	using Entities;
+	using Filters;
+	using Models;
 
-    public interface IUrlRepository
-    {
-        UrlEntity Create(UrlEntity entity);
+	public interface IUrlRepository
+	{
+		UrlEntity Create(UrlEntity entity);
 
-        UrlEntity Get(string hash);
+		UrlEntity Get(string hash);
 
-        ListPage<UrlEntity> GetList(UrlListFilter filter);
+		ListPage<UrlEntity> GetList(UrlListFilter filter);
 
-        UrlEntity Increment(string hash);
+		UrlEntity Increment(string hash);
 
-        void SetPageTitle(UrlEntity entity);
-    }
+		void SetPageTitle(UrlEntity entity);
+	}
 }

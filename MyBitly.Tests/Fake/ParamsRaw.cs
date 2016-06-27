@@ -1,12 +1,12 @@
 ﻿namespace MyBitly.Tests.Fake
 {
-    public class ParamsRaw
-    {
-        public ParamsRaw()
-        {
-            ShortDomen = "http://mybitly.com";
-        }
+	public class ParamsRaw
+	{
+		public ParamsRaw()
+		{
+			ShortDomen = "http://mybitly.com";
+		}
 
-        public string ShortDomen { get; set; }
-    }
+		public string ShortDomen { get; set; }
+	}
 }

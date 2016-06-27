@@ -1,28 +1,28 @@
 ﻿namespace MyBitly.DAL.UnitOfWork
 {
-    using System.Data;
+	using System.Data;
 
-    public interface IUnitOfWork
-    {
-        /// <summary>
-        /// Открывает подключение к БД и транзакцию
-        /// </summary>
-        void BeginTransaction();
+	public interface IUnitOfWork
+	{
+		/// <summary>
+		/// Открывает подключение к БД и транзакцию
+		/// </summary>
+		void BeginTransaction();
 
-        /// <summary>
-        /// Открывает подключение к БД и транзакцию c указанным уровнеми изоляции
-        /// <param name="lvl">Уровень изолированости транзакции</param>
-        /// </summary>
-        void BeginTransaction(IsolationLevel lvl);
+		/// <summary>
+		/// Открывает подключение к БД и транзакцию c указанным уровнеми изоляции
+		/// <param name="lvl">Уровень изолированости транзакции</param>
+		/// </summary>
+		void BeginTransaction(IsolationLevel lvl);
 
-        /// <summary>
-        /// Коммитит транзакциюи закрывает подключение к БД
-        /// </summary>
-        void Commit();
+		/// <summary>
+		/// Коммитит транзакциюи закрывает подключение к БД
+		/// </summary>
+		void Commit();
 
-        /// <summary>
-        /// Откатывает транзакцию и закрывает подключение к БД
-        /// </summary>
-        void Rollback();  
-    }
+		/// <summary>
+		/// Откатывает транзакцию и закрывает подключение к БД
+		/// </summary>
+		void Rollback();  
+	}
 }
