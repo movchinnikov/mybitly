@@ -15,7 +15,7 @@
         public UrlController(IWindsorContainer container, IUrlService urlService)
             : base(container)
         {
-            this._urlService = urlService;
+            _urlService = urlService;
         }
 
         [HttpPost]
@@ -23,7 +23,7 @@
         {
             try
             {
-                var response = this._urlService.Shorten(longUrl);
+                var response = _urlService.Shorten(longUrl);
                 return new HttpResponseMessage()
                 {
                     Content =
@@ -33,7 +33,7 @@
             }
             finally
             {
-                if (this._urlService != null) this.Container.Release(this._urlService);
+                if (_urlService != null) Container.Release(_urlService);
             }
         }
 
@@ -42,7 +42,7 @@
         {
             try
             {
-                var response = this._urlService.Get(hash);
+                var response = _urlService.Get(hash);
                 return new HttpResponseMessage()
                 {
                     Content =
@@ -52,7 +52,7 @@
             }
             finally
             {
-                if (this._urlService != null) this.Container.Release(this._urlService);
+                if (_urlService != null) Container.Release(_urlService);
             }
         }
 
@@ -61,7 +61,7 @@
         {
             try
             {
-                var response = this._urlService.LinkHistory(request);
+                var response = _urlService.LinkHistory(request);
                 return new HttpResponseMessage()
                 {
                     Content =
@@ -71,7 +71,7 @@
             }
             finally
             {
-                if (this._urlService != null) this.Container.Release(this._urlService);
+                if (_urlService != null) Container.Release(_urlService);
             }
         }
     }

@@ -16,19 +16,19 @@
         [UnitOfWork]
         public UrlEntity Create(UrlEntity entity)
         {
-            return this.Session.Set<UrlEntity>().Add(entity);
+            return Session.Set<UrlEntity>().Add(entity);
         }
 
         [UnitOfWork]
         public UrlEntity Get(string hash)
         {
-            return this.Session.Set<UrlEntity>().FirstOrDefault(x => x.Hash == hash);
+            return Session.Set<UrlEntity>().FirstOrDefault(x => x.Hash == hash);
         }
 
         [UnitOfWork]
         public ListPage<UrlEntity> GetList(UrlListFilter filter)
         {
-            var dbSet = this.Session.Set<UrlEntity>();
+            var dbSet = Session.Set<UrlEntity>();
 
             var totalCount = filter.ApplyCustom(dbSet).Select(x => x.Id).Count();
             var data = filter.Apply(dbSet).ToArray();
@@ -43,7 +43,7 @@
         [UnitOfWork]
         public UrlEntity Increment(string hash)
         {
-            var entity = this.Session.Set<UrlEntity>().FirstOrDefault(x => x.Hash == hash);
+            var entity = Session.Set<UrlEntity>().FirstOrDefault(x => x.Hash == hash);
             if (entity == null) return null;
             ++entity.Clicks;
 
@@ -54,7 +54,7 @@
 
                 try
                 {
-                    this.Session.SaveChanges();
+                    Session.SaveChanges();
                 }
                 catch (DbUpdateConcurrencyException ex)
                 {
@@ -70,8 +70,8 @@
         [UnitOfWork]
         public void SetPageTitle(UrlEntity entity)
         {
-            this.Session.Set<UrlEntity>().Attach(entity);
-            this.Session.Entry(entity).Property(x => x.Title).IsModified = true;
+            Session.Set<UrlEntity>().Attach(entity);
+            Session.Entry(entity).Property(x => x.Title).IsModified = true;
         }
     }
 }

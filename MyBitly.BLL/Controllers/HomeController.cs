@@ -14,7 +14,7 @@
         public HomeController(IWindsorContainer container, IUrlService urlService)
             : base(container)
         {
-            this._urlService = urlService;
+            _urlService = urlService;
         }
 
         public ActionResult Index()
@@ -26,14 +26,14 @@
         {
             try
             {
-                var response = this._urlService.Get(hash);
-                Helper.ShallowExceptions(() => this._urlService.Increment(hash));
+                var response = _urlService.Get(hash);
+                Helper.ShallowExceptions(() => _urlService.Increment(hash));
 
                 return Redirect(response.LongUrl);
             }
             finally
             {
-                if (this._urlService != null) this.Container.Release(this._urlService);
+                if (_urlService != null) Container.Release(_urlService);
             }
         }
     }

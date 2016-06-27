@@ -31,26 +31,26 @@
 
         public virtual bool IsCorrect()
         {
-            if (this.Limit < 0) return false;
+            if (Limit < 0) return false;
 
-            return this.Offset >= 0;
+            return Offset >= 0;
         }
 
         public virtual IQueryable<TEntity> Apply(DbSet<TEntity> dbSet)
         {
-            IQueryable<TEntity> result = this.ApplyCustom(dbSet);
+            IQueryable<TEntity> result = ApplyCustom(dbSet);
 
-            foreach (var sortParam in this.SortParams)
+            foreach (var sortParam in SortParams)
             {
                 result = sortParam.Direction == ListSortDirection.Ascending ?
                     result.OrderBy(sortParam.Field) :
                     result.OrderByDescending(sortParam.Field);
             }
 
-            if (this.Offset > 0)
-                result = result.Skip(this.Offset);
-            if (this.Limit > 0)
-                result = result.Take(this.Limit);
+            if (Offset > 0)
+                result = result.Skip(Offset);
+            if (Limit > 0)
+                result = result.Take(Limit);
 
             return result;
         }

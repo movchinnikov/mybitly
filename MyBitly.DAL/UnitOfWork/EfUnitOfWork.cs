@@ -13,7 +13,7 @@
 
         public EfUnitOfWork(ISessionFactory sessionFactory)
         {
-            this._factory = sessionFactory;
+            _factory = sessionFactory;
         }
 
         public DbContext Session { get; private set; }
@@ -28,26 +28,26 @@
 
         public void BeginTransaction()
         {
-            this.BeginTransaction(IsolationLevel.ReadCommitted);
+            BeginTransaction(IsolationLevel.ReadCommitted);
         }
 
         public void BeginTransaction(IsolationLevel lvl)
         {
-            this.Session = this._factory.OpenSession();
-            this._transaction = this.Session.Database.BeginTransaction(lvl);
+            Session = _factory.OpenSession();
+            _transaction = Session.Database.BeginTransaction(lvl);
         }
 
         public void Commit()
         {
-            this.Session.SaveChanges();
-            this._transaction.Commit();
-            this._transaction.Dispose();
+            Session.SaveChanges();
+            _transaction.Commit();
+            _transaction.Dispose();
         }
 
         public void Rollback()
         {
-            this._transaction.Rollback();
-            this._transaction.Dispose();
+            _transaction.Rollback();
+            _transaction.Dispose();
         }
 
         public void Dispose()
@@ -58,14 +58,14 @@
 
         public virtual void Dispose(bool disposing)
         {
-            if (!this._disposed)
+            if (!_disposed)
             {
                 if (disposing)
                 {
-                    this.Session.Dispose();
+                    Session.Dispose();
                 }
             }
-            this._disposed = true;
+            _disposed = true;
         }
     }
 }

@@ -1,74 +1,56 @@
 ﻿namespace MyBitly.Tests
 {
     using System;
-    using System.Data.Entity;
     using System.Linq;
-    using Castle.MicroKernel.Registration;
-    using NUnit.Framework;
-    using Common.Params;
-    using Common.Resources;
-    using DAL;
-    using DAL.Entities;
-    using DAL.Factory;
-    using DAL.Repositories;
-    using DAL.UnitOfWork;
+    using Base;
     using BLL.Models;
     using BLL.Services;
-    using Base;
+    using Castle.MicroKernel.Registration;
+    using Common.Resources;
+    using DAL.Entities;
     using Fake;
-    
+    using NUnit.Framework;
+
     [TestFixture]
     public class UrlServiceTest : TestBase
     {
         private IUrlService _urlService;
-        private ISessionFactory _factory;
         
         [SetUp]
         public override void SetUp()
         {
             base.SetUp();
 
-            this.Container.Register(
-                Component.For<IUrlService>().ImplementedBy<UrlService>().LifestyleTransient(),
-                Component.For<ISessionFactory>().ImplementedBy<SessionFactory>().LifestyleSingleton(),
-                Component.For<DbContext>().ImplementedBy<MyBitlyContext>().LifestyleTransient(),
-                Component.For<EfUnitOfWorkInterceptor>().LifestyleTransient(),
-                Component.For<IUrlRepository>().ImplementedBy<UrlRepository>()
-                    .Interceptors<EfUnitOfWorkInterceptor>().LifestyleTransient()
+            Container.Register(
+                Component.For<IUrlService>().ImplementedBy<UrlService>().LifestyleTransient()
                 );
-
-            this._factory = this.Container.Resolve<ISessionFactory>();
         }
 
-        private void RegisterParamsHelper(ParamsRaw paramsRaw)
+        protected override void RegisterParamsHelper(ParamsRaw paramsRaw)
         {
-            this.Container.Register(
-                Component.For<IParamsHelper>().ImplementedBy<FakeParamsHelper>()
-                    .DependsOn(Dependency.OnValue("paramsRaw", paramsRaw)).LifestyleSingleton()
-                );
-
-            this._urlService = this.Container.Resolve<IUrlService>();
+            base.RegisterParamsHelper(paramsRaw);
+            _urlService = Container.Resolve<IUrlService>();
         }
 
         [TestCase("localhost")]
         [TestCase("1254")]
         [TestCase("www.localhost")]
-        public void Shorten_NoFormat_Negative(string longUrl)
+        public void Shorten_NoFormat(string longUrl)
         {
-            this.RegisterParamsHelper(new ParamsRaw());
+            RegisterParamsHelper(new ParamsRaw());
 
-            var ex = InvokeAndAssertException(() => this._urlService.Shorten(longUrl), MyBitlyResources.ShortenUrlException);
+            var ex = InvokeAndAssertException(() => _urlService.Shorten(longUrl), MyBitlyResources.ShortenUrlException);
             Assert.AreEqual(MyBitlyResources.INVALID_ARG_URL, ex.Code);
             Assert.AreEqual(101, ex.StatusCode);
         }
 
         [TestCase("")]
         [TestCase(null)]
-        public void Shorten_Empty_Negative(string longUrl)
+        public void Shorten_Empty(string longUrl)
         {
-            this.RegisterParamsHelper(new ParamsRaw());
+            RegisterParamsHelper(new ParamsRaw());
 
-            var ex = InvokeAndAssertException(() => this._urlService.Shorten(longUrl), MyBitlyResources.ShortenUrlException);
+            var ex = InvokeAndAssertException(() => _urlService.Shorten(longUrl), MyBitlyResources.ShortenUrlException);
             Assert.AreEqual(MyBitlyResources.EMPTY_ARG_URL, ex.Code);
             Assert.AreEqual(100, ex.StatusCode);
         }
@@ -91,18 +73,19 @@
         [TestCase("https://www.localhost")]
         [TestCase("ftp://www.localhost:154")]
         [TestCase("ftp://www.localhost")]
-        public void Shorten_Positive(string longUrl)
+        public void Shorten(string longUrl)
         {
             var paramsRaw = new ParamsRaw();
-            this.RegisterParamsHelper(paramsRaw);
+            RegisterParamsHelper(paramsRaw);
+            RegisterDbDependencies();
 
-            var response = this._urlService.Shorten(longUrl);
+            var response = _urlService.Shorten(longUrl);
             Assert.NotNull(response);
             Assert.AreEqual(longUrl, response.LongUrl);
             Assert.IsNotNull(response.Hash);
             Assert.IsNotEmpty(response.Hash);
 
-            using (var context = this._factory.OpenSession())
+            using (var context = Factory.OpenSession())
             {
                 var dbSet = context.Set<UrlEntity>();
 
@@ -115,41 +98,43 @@
         }
 
         [Test]
-        public void Get_NotExist_Negative()
+        public void Get_NotExist()
         {
-            this.RegisterParamsHelper(new ParamsRaw());
+            RegisterParamsHelper(new ParamsRaw());
+            RegisterDbDependencies();
 
-            var ex = InvokeAndAssertException(() => this._urlService.Get("1"), MyBitlyResources.GetException);
+            var ex = InvokeAndAssertException(() => _urlService.Get("1"), MyBitlyResources.GetException);
             Assert.AreEqual(MyBitlyResources.URL_NOT_FOUND, ex.Code);
             Assert.AreEqual(104, ex.StatusCode);
         }
 
         [TestCase("")]
         [TestCase(null)]
-        public void Get_HashIsEmpty_Negative(string hash)
+        public void Get_HashIsEmpty(string hash)
         {
-            this.RegisterParamsHelper(new ParamsRaw());
+            RegisterParamsHelper(new ParamsRaw());
 
-            var ex = InvokeAndAssertException(() => this._urlService.Get(hash), MyBitlyResources.GetException);
+            var ex = InvokeAndAssertException(() => _urlService.Get(hash), MyBitlyResources.GetException);
             Assert.AreEqual(MyBitlyResources.EMPTY_SHORT_URL, ex.Code);
             Assert.AreEqual(103, ex.StatusCode);
         }
 
         [Test]
-        public void Get_Positive()
+        public void Get()
         {
-            this.RegisterParamsHelper(new ParamsRaw());
+            RegisterParamsHelper(new ParamsRaw());
+            RegisterDbDependencies();
 
             const string hash = "тестовый";
             UrlEntity entity = null;
-            using (var context = this._factory.OpenSession())
+            using (var context = Factory.OpenSession())
             {
                 var dbSet = context.Set<UrlEntity>();
                 entity = new UrlEntity { Hash = hash, LongUrl = "http://google.ru", Title = "Google" };
                 dbSet.Add(entity);
                 context.SaveChanges();
             }
-            var fromDb = this._urlService.Get(hash);
+            var fromDb = _urlService.Get(hash);
 
             Assert.NotNull(fromDb);
             Assert.AreEqual(entity.Hash, fromDb.Hash);
@@ -157,69 +142,70 @@
         }
 
         [Test]
-        public void GetList_NegativeOffset_Negative()
+        public void GetList_NegativeOffset()
         {
-            this.RegisterParamsHelper(new ParamsRaw());
+            RegisterParamsHelper(new ParamsRaw());
 
             var request = new UrlHistoryRequest {Offset = -1, Hashes = new[] {"googleru", "yandexru"}};
 
-            var ex = InvokeAndAssertException(() => this._urlService.LinkHistory(request), MyBitlyResources.GetListException);
+            var ex = InvokeAndAssertException(() => _urlService.LinkHistory(request), MyBitlyResources.GetListException);
             Assert.AreEqual(MyBitlyResources.INVALID_REQUEST, ex.Code);
             Assert.AreEqual(105, ex.StatusCode);
         }
 
         [Test]
-        public void GetList_NullRequest_Negative()
+        public void GetList_NullRequest()
         {
-            this.RegisterParamsHelper(new ParamsRaw());
+            RegisterParamsHelper(new ParamsRaw());
 
-            var ex = InvokeAndAssertException(() => this._urlService.LinkHistory(null), MyBitlyResources.GetListException);
+            var ex = InvokeAndAssertException(() => _urlService.LinkHistory(null), MyBitlyResources.GetListException);
             Assert.AreEqual(MyBitlyResources.INVALID_REQUEST, ex.Code);
             Assert.AreEqual(105, ex.StatusCode);
         }
 
         [Test]
-        public void GetList_NegativeLimit_Negative()
+        public void GetList_NegativeLimit()
         {
-            this.RegisterParamsHelper(new ParamsRaw());
+            RegisterParamsHelper(new ParamsRaw());
 
             var request = new UrlHistoryRequest { Limit = -1, Hashes = new[] { "googleru", "yandexru" } };
 
-            var ex = InvokeAndAssertException(() => this._urlService.LinkHistory(request), MyBitlyResources.GetListException);
+            var ex = InvokeAndAssertException(() => _urlService.LinkHistory(request), MyBitlyResources.GetListException);
             Assert.AreEqual(MyBitlyResources.INVALID_REQUEST, ex.Code);
             Assert.AreEqual(105, ex.StatusCode);
         }
 
         [Test]
-        public void GetList_NullHashes_Negative()
+        public void GetList_NullHashes()
         {
-            this.RegisterParamsHelper(new ParamsRaw());
+            RegisterParamsHelper(new ParamsRaw());
 
             var request = new UrlHistoryRequest { Limit = -1, Hashes = null };
 
-            var ex = InvokeAndAssertException(() => this._urlService.LinkHistory(request), MyBitlyResources.GetListException);
+            var ex = InvokeAndAssertException(() => _urlService.LinkHistory(request), MyBitlyResources.GetListException);
             Assert.AreEqual(MyBitlyResources.INVALID_REQUEST, ex.Code);
             Assert.AreEqual(105, ex.StatusCode);
         }
 
         [Test]
-        public void GetList_EmptyHashes_Negative()
+        public void GetList_EmptyHashes()
         {
-            this.RegisterParamsHelper(new ParamsRaw());
+            RegisterParamsHelper(new ParamsRaw());
 
             var request = new UrlHistoryRequest { Limit = -1, Hashes = new String[0] };
 
-            var ex = InvokeAndAssertException(() => this._urlService.LinkHistory(request), MyBitlyResources.GetListException);
+            var ex = InvokeAndAssertException(() => _urlService.LinkHistory(request), MyBitlyResources.GetListException);
             Assert.AreEqual(MyBitlyResources.INVALID_REQUEST, ex.Code);
             Assert.AreEqual(105, ex.StatusCode);
         }
 
         [Test]
-        public void GetList_Positive()
+        public void GetList()
         {
-            this.RegisterParamsHelper(new ParamsRaw());
+            RegisterParamsHelper(new ParamsRaw());
+            RegisterDbDependencies();
 
-            using (var context = this._factory.OpenSession())
+            using (var context = Factory.OpenSession())
             {
                 var dbSet = context.Set<UrlEntity>();
 
@@ -232,7 +218,7 @@
                 context.SaveChanges();
             }
 
-            var response = this._urlService.LinkHistory(new UrlHistoryRequest { Hashes = new[] { "googleru", "yandexru" } });
+            var response = _urlService.LinkHistory(new UrlHistoryRequest { Hashes = new[] { "googleru", "yandexru" } });
             Assert.NotNull(response);
             Assert.NotNull(response.Data);
             Assert.AreEqual(2, response.Data.Count());
@@ -252,11 +238,12 @@
         }
 
         [Test]
-        public void GetList_HasLimit_Positive()
+        public void GetList_HasLimit()
         {
-            this.RegisterParamsHelper(new ParamsRaw());
-
-            using (var context = this._factory.OpenSession())
+            RegisterParamsHelper(new ParamsRaw());
+            RegisterDbDependencies();
+            
+            using (var context = Factory.OpenSession())
             {
                 var dbSet = context.Set<UrlEntity>();
 
@@ -269,7 +256,7 @@
                 context.SaveChanges();
             }
 
-            var response = this._urlService.LinkHistory(new UrlHistoryRequest { Limit = 1, Hashes = new[] { "googleru", "yandexru" } });
+            var response = _urlService.LinkHistory(new UrlHistoryRequest { Limit = 1, Hashes = new[] { "googleru", "yandexru" } });
             Assert.NotNull(response);
             Assert.NotNull(response.Data);
             Assert.AreEqual(1, response.Data.Count());
@@ -285,11 +272,12 @@
         }
 
         [Test]
-        public void GetList_HasOffset_Positive()
+        public void GetList_HasOffset()
         {
-            this.RegisterParamsHelper(new ParamsRaw());
+            RegisterParamsHelper(new ParamsRaw());
+            RegisterDbDependencies();
 
-            using (var context = this._factory.OpenSession())
+            using (var context = Factory.OpenSession())
             {
                 var dbSet = context.Set<UrlEntity>();
 
@@ -302,7 +290,7 @@
                 context.SaveChanges();
             }
 
-            var response = this._urlService.LinkHistory(new UrlHistoryRequest { Offset = 1, Hashes = new[] { "googleru", "yandexru" } });
+            var response = _urlService.LinkHistory(new UrlHistoryRequest { Offset = 1, Hashes = new[] { "googleru", "yandexru" } });
             Assert.NotNull(response);
             Assert.NotNull(response.Data);
             Assert.AreEqual(1, response.Data.Count());
@@ -318,11 +306,13 @@
         }
 
         [Test]
-        public void GetList_HasOffsetAndLimit_Positive()
+        public void GetList_HasOffsetAndLimit()
         {
-            this.RegisterParamsHelper(new ParamsRaw());
+            RegisterParamsHelper(new ParamsRaw());
+            RegisterDbDependencies();
 
-            using (var context = this._factory.OpenSession())
+
+            using (var context = Factory.OpenSession())
             {
                 var dbSet = context.Set<UrlEntity>();
 
@@ -335,7 +325,7 @@
                 context.SaveChanges();
             }
 
-            var response = this._urlService.LinkHistory(new UrlHistoryRequest { Limit = 1, Offset = 1, Hashes = new[] { "googleru", "yandexru" } });
+            var response = _urlService.LinkHistory(new UrlHistoryRequest { Limit = 1, Offset = 1, Hashes = new[] { "googleru", "yandexru" } });
             Assert.NotNull(response);
             Assert.NotNull(response.Data);
             Assert.AreEqual(1, response.Data.Count());
@@ -351,11 +341,12 @@
         }
 
         [Test]
-        public void GetList_EmptyResult_Positive()
+        public void GetList_EmptyResult()
         {
-            this.RegisterParamsHelper(new ParamsRaw());
-
-            var response = this._urlService.LinkHistory(new UrlHistoryRequest { Hashes = new[] { "тестовый" } });
+            RegisterParamsHelper(new ParamsRaw());
+            RegisterDbDependencies();
+            
+            var response = _urlService.LinkHistory(new UrlHistoryRequest { Hashes = new[] { "тестовый" } });
             Assert.NotNull(response);
             Assert.NotNull(response.Data);
             Assert.AreEqual(0, response.Data.Count());
@@ -363,32 +354,34 @@
         }
 
         [Test]
-        public void Increment_NotExisitsHash_Negative()
+        public void Increment_NotExisitsHash()
         {
-            this.RegisterParamsHelper(new ParamsRaw());
+            RegisterParamsHelper(new ParamsRaw());
+            RegisterDbDependencies();
 
-            var ex = InvokeAndAssertException(() => this._urlService.Increment("тестовый"), MyBitlyResources.NotFoundException);
+            var ex = InvokeAndAssertException(() => _urlService.Increment("тестовый"), MyBitlyResources.NotFoundException);
             Assert.AreEqual(MyBitlyResources.URL_NOT_FOUND, ex.Code);
             Assert.AreEqual(104, ex.StatusCode);
         }
 
         [TestCase("")]
         [TestCase(null)]
-        public void Increment_HashIsEmpty_Negative(string hash)
+        public void Increment_HashIsEmpty(string hash)
         {
-            this.RegisterParamsHelper(new ParamsRaw());
+            RegisterParamsHelper(new ParamsRaw());
 
-            var ex = InvokeAndAssertException(() => this._urlService.Increment(hash), MyBitlyResources.GetException);
+            var ex = InvokeAndAssertException(() => _urlService.Increment(hash), MyBitlyResources.GetException);
             Assert.AreEqual(MyBitlyResources.EMPTY_SHORT_URL, ex.Code);
             Assert.AreEqual(103, ex.StatusCode);
         }
 
         [Test]
-        public void Increment_Positive()
+        public void Increment()
         {
-            this.RegisterParamsHelper(new ParamsRaw());
+            RegisterParamsHelper(new ParamsRaw());
+            RegisterDbDependencies();
 
-            using (var context = this._factory.OpenSession())
+            using (var context = Factory.OpenSession())
             {
                 var dbSet = context.Set<UrlEntity>();
 
@@ -397,15 +390,15 @@
                 context.SaveChanges();
             }
 
-            var response = this._urlService.Increment("yandexru");
+            var response = _urlService.Increment("yandexru");
             Assert.NotNull(response);
             Assert.AreEqual(1, response.Clicks);
             
-            response = this._urlService.Increment("yandexru");
+            response = _urlService.Increment("yandexru");
             Assert.NotNull(response);
             Assert.AreEqual(2, response.Clicks);
 
-            response = this._urlService.Increment("yandexru");
+            response = _urlService.Increment("yandexru");
             Assert.NotNull(response);
             Assert.AreEqual(3, response.Clicks);
         }

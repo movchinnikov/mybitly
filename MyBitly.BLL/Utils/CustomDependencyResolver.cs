@@ -13,22 +13,22 @@
 
         public CustomDependencyResolver(IKernel container)
         {
-            this._container = container;
+            _container = container;
         }
 
         public IDependencyScope BeginScope()
         {
-            return new CustomDependencyScope(this._container);
+            return new CustomDependencyScope(_container);
         }
 
         public object GetService(Type serviceType)
         {
-            return this._container.HasComponent(serviceType) ? this._container.Resolve(serviceType) : null;
+            return _container.HasComponent(serviceType) ? _container.Resolve(serviceType) : null;
         }
 
         public IEnumerable<object> GetServices(Type serviceType)
         {
-            return this._container.ResolveAll(serviceType).Cast<object>();
+            return _container.ResolveAll(serviceType).Cast<object>();
         }
 
         public void Dispose()

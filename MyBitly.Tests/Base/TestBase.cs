@@ -1,9 +1,16 @@
 ﻿namespace MyBitly.Tests.Base
 {
+    using System.Data.Entity;
     using System.Transactions;
     using Castle.MicroKernel.Registration;
     using Castle.Windsor;
     using Common.Exceptions;
+    using Common.Params;
+    using DAL;
+    using DAL.Factory;
+    using DAL.Repositories;
+    using DAL.UnitOfWork;
+    using Fake;
     using NUnit.Framework;
 
     public class TestBase
@@ -12,33 +19,56 @@
 
         protected IWindsorContainer DefaultContainer;
 
+        protected ISessionFactory Factory;
+
         private TransactionScope _scope;
 
         public TestBase()
         {
-            this.DefaultContainer = new WindsorContainer();
+            DefaultContainer = new WindsorContainer();
         }
 
         ~TestBase()
         {
-            this.DefaultContainer.Dispose();
+            DefaultContainer.Dispose();
+        }
+
+        protected virtual void RegisterParamsHelper(ParamsRaw paramsRaw)
+        {
+            Container.Register(
+               Component.For<IParamsHelper>().ImplementedBy<FakeParamsHelper>()
+                   .DependsOn(Dependency.OnValue("paramsRaw", paramsRaw)).LifestyleSingleton()
+               );
+        }
+
+        protected void RegisterDbDependencies()
+        {
+            Container.Register(
+                Component.For<ISessionFactory>().ImplementedBy<SessionFactory>().LifestyleSingleton(),
+                Component.For<DbContext>().ImplementedBy<MyBitlyContext>().LifestyleTransient(),
+                Component.For<EfUnitOfWorkInterceptor>().LifestyleTransient(),
+                Component.For<IUrlRepository>().ImplementedBy<UrlRepository>()
+                    .Interceptors<EfUnitOfWorkInterceptor>().LifestyleTransient()
+                );
+
+            Factory = Container.Resolve<ISessionFactory>();
         }
 
         public virtual void SetUp()
         {
-            this.Container = new WindsorContainer();
-            this.DefaultContainer.AddChildContainer(this.Container);
-            this.Container.Register(
-                Component.For<IWindsorContainer>().Instance(this.Container));
+            Container = new WindsorContainer();
+            DefaultContainer.AddChildContainer(Container);
+            Container.Register(
+                Component.For<IWindsorContainer>().Instance(Container));
 
-            this._scope = new TransactionScope();
+            _scope = new TransactionScope();
         }
 
         [TearDown]
         public virtual void TearDown()
         {
-            if (this._scope != null) this._scope.Dispose();
-            this.DefaultContainer.RemoveChildContainer(this.Container);
+            if (_scope != null) _scope.Dispose();
+            DefaultContainer.RemoveChildContainer(Container);
         }
 
         protected static MyBitlyException InvokeAndAssertException(TestDelegate invokeMethod, string exceptionMessage)

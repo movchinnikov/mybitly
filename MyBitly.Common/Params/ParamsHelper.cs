@@ -12,15 +12,15 @@
         {
             get
             {
-                if (!string.IsNullOrWhiteSpace(this._shortDomen))
-                    return this._shortDomen;
+                if (!string.IsNullOrWhiteSpace(_shortDomen))
+                    return _shortDomen;
 
-                this._shortDomen = ConfigurationManager.AppSettings["shortDomen"];
+                _shortDomen = ConfigurationManager.AppSettings["shortDomen"];
 
-                if (string.IsNullOrWhiteSpace(this._shortDomen))
+                if (string.IsNullOrWhiteSpace(_shortDomen))
                     throw new ArgumentException(MyBitlyResources.ShortDomenNotConfigure);
 
-                return this._shortDomen;
+                return _shortDomen;
             }
         }
     }

@@ -9,7 +9,7 @@
 
         protected ControllerBase(IWindsorContainer container)
         {
-            this.Container = container;
+            Container = container;
         }
     }
 }

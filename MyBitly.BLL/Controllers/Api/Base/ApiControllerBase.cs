@@ -9,7 +9,7 @@
 
         protected ApiControllerBase(IWindsorContainer container)
         {
-            this.Container = container;
+            Container = container;
         }
     }
 }

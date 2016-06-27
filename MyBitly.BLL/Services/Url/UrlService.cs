@@ -23,15 +23,15 @@
         public UrlService(IWindsorContainer container, IParamsHelper paramsHelper)
             : base(container)
         {
-            this._paramsHelper = paramsHelper;
+            _paramsHelper = paramsHelper;
         }
 
         private IUrlRepository Repository
         {
-            get { return this.Container.Resolve<IUrlRepository>(); }
+            get { return Container.Resolve<IUrlRepository>(); }
         }
 
-        #region
+        #region Shorten
 
         public ShortenResponse Shorten(string longUrl)
         {
@@ -43,7 +43,7 @@
                 try
                 {
                     var hash = Guid.NewGuid().GetHashCode().ToString("x");
-                    entity = this.Repository.Create(new UrlEntity { LongUrl = longUrl, Hash = hash, Title = longUrl });
+                    entity = Repository.Create(new UrlEntity { LongUrl = longUrl, Hash = hash, Title = longUrl });
                 }
                 catch (Exception e)
                 {
@@ -54,10 +54,10 @@
                     };
                 }
 
-                this.SetPageTitle(entity);
+                SetPageTitle(entity);
 
                 var response = (ShortenResponse) entity;
-                response.ShortUrl = string.Format("{0}/{1}", this._paramsHelper.ShortDomen, response.Hash);
+                response.ShortUrl = string.Format("{0}/{1}", _paramsHelper.ShortDomen, response.Hash);
 
                 return response;
             }
@@ -80,7 +80,7 @@
             Task.Run(() =>
             {
                 entity.Title = GetPageTitle(entity.LongUrl);
-                this.Repository.SetPageTitle(entity);
+                Repository.SetPageTitle(entity);
             });
         }
 
@@ -114,7 +114,7 @@
             {
                 BeforeGet(hash);
 
-                var entity = this.Repository.Get(hash);
+                var entity = Repository.Get(hash);
 
                 if (entity == null)
                     throw new MyBitlyException(MyBitlyResources.GetException)
@@ -124,7 +124,7 @@
                     };
 
                 var response = (ShortenResponse) entity;
-                response.ShortUrl = string.Format("{0}/{1}", this._paramsHelper.ShortDomen, response.Hash);
+                response.ShortUrl = string.Format("{0}/{1}", _paramsHelper.ShortDomen, response.Hash);
 
                 return response;
             }
@@ -162,7 +162,7 @@
             {
                 var filter = BeforeGetList(request);
 
-                var entities = this.Repository.GetList(filter);
+                var entities = Repository.GetList(filter);
 
                 if (entities == null || entities.Data == null)
                     throw new MyBitlyException(MyBitlyResources.GetListException)
@@ -176,7 +176,7 @@
                     Data = entities.Data.Select(x =>
                     {
                         var response = (ShortenResponse) x;
-                        response.ShortUrl = string.Format("{0}/{1}", this._paramsHelper.ShortDomen, response.Hash);
+                        response.ShortUrl = string.Format("{0}/{1}", _paramsHelper.ShortDomen, response.Hash);
 
                         return response;
                     }),
@@ -229,7 +229,7 @@
                     StatusCode = 103
                 };
 
-            var entity = this.Repository.Increment(hash);
+            var entity = Repository.Increment(hash);
 
             if (entity == null)
                 throw new MyBitlyException(MyBitlyResources.NotFoundException)
@@ -239,7 +239,7 @@
                 };
 
             var response = (ShortenResponse)entity;
-            response.ShortUrl = string.Format("{0}/{1}", this._paramsHelper.ShortDomen, response.Hash);
+            response.ShortUrl = string.Format("{0}/{1}", _paramsHelper.ShortDomen, response.Hash);
 
             return response;
         }

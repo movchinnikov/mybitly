@@ -9,12 +9,12 @@
 
         public SessionFactory(IWindsorContainer container)
         {
-            this._container = container;
+            _container = container;
         }
 
         public DbContext OpenSession()
         {
-            return this._container.Resolve<DbContext>();
+            return _container.Resolve<DbContext>();
         }
     }
 }

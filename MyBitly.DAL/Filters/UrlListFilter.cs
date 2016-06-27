@@ -15,12 +15,12 @@
         {
             if (!base.IsCorrect()) return false;
 
-            return this.Hashes != null && this.Hashes.Any();
+            return Hashes != null && Hashes.Any();
         }
 
         public override IQueryable<UrlEntity> ApplyCustom(IQueryable<UrlEntity> query)
         {
-            return query.Where(x => this.Hashes.Contains(x.Hash));
+            return query.Where(x => Hashes.Contains(x.Hash));
         }
     }
 }

@@ -15,23 +15,23 @@
 
         public CustomDependencyScope(IKernel container)
         {
-            this._container = container;
-            this._scope = container.BeginScope();
+            _container = container;
+            _scope = container.BeginScope();
         }
 
         public object GetService(Type serviceType)
         {
-            return this._container.HasComponent(serviceType) ? this._container.Resolve(serviceType) : null;
+            return _container.HasComponent(serviceType) ? _container.Resolve(serviceType) : null;
         }
 
         public IEnumerable<object> GetServices(Type serviceType)
         {
-            return this._container.ResolveAll(serviceType).Cast<object>();
+            return _container.ResolveAll(serviceType).Cast<object>();
         }
 
         public void Dispose()
         {
-            this._scope.Dispose();
+            _scope.Dispose();
         }
     }
 }

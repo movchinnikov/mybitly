@@ -11,7 +11,7 @@
 
         public EfUnitOfWorkInterceptor(ISessionFactory factory)
         {
-            this._factory = factory;
+            _factory = factory;
         }
 
         public void Intercept(IInvocation invocation)
@@ -26,7 +26,7 @@
 
             try
             {
-                EfUnitOfWork.Current = new EfUnitOfWork(this._factory);
+                EfUnitOfWork.Current = new EfUnitOfWork(_factory);
                 EfUnitOfWork.Current.BeginTransaction(unitOfWorkAttr.IsolationLevel);
 
                 invocation.Proceed();

@@ -16,9 +16,9 @@
 
         protected void Application_Start()
         {
-            this._container = new WindsorContainer();
-            this._container.Register(
-                Component.For<IWindsorContainer>().Instance(this._container))
+            _container = new WindsorContainer();
+            _container.Register(
+                Component.For<IWindsorContainer>().Instance(_container))
                 .Install(new BllInstaller(), new DalInstaller());
 
             AreaRegistration.RegisterAllAreas();
@@ -27,14 +27,14 @@
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
 
-            var controllerFactory = new CustomControllerFactory(this._container.Kernel);
+            var controllerFactory = new CustomControllerFactory(_container.Kernel);
             ControllerBuilder.Current.SetControllerFactory(controllerFactory);
-            GlobalConfiguration.Configuration.DependencyResolver = new CustomDependencyResolver(this._container.Kernel);
+            GlobalConfiguration.Configuration.DependencyResolver = new CustomDependencyResolver(_container.Kernel);
         }
 
         protected void Application_End()
         {
-            if (this._container != null) this._container.Dispose();
+            if (_container != null) _container.Dispose();
         }
     }
 }

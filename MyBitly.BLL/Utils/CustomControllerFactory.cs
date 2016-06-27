@@ -12,7 +12,7 @@
 
         public CustomControllerFactory(IKernel kernel)
         {
-            this._kernel = kernel;
+            _kernel = kernel;
         }
 
         public override void ReleaseController(IController controller)

@@ -86,14 +86,6 @@ PublishScripts/
 *.nuget.props
 *.nuget.targets
 
-# Microsoft Azure Build Output
-csx/
-*.build.csdef
-
-# Microsoft Azure Emulator
-ecf/
-rcf/
-
 # Visual Studio cache files
 # files ending in .cache can be ignored
 *.[Cc]ache
@@ -126,35 +118,6 @@ UpgradeLog*.htm
 .idea/
 *.sln.iml
 
-# =========================
-# Operating System Files
-# =========================
-
-# OSX
-# =========================
-
-.DS_Store
-.AppleDouble
-.LSOverride
-
-# Thumbnails
-._*
-
-# Files that might appear in the root of a volume
-.DocumentRevisions-V100
-.fseventsd
-.Spotlight-V100
-.TemporaryItems
-.Trashes
-.VolumeIcon.icns
-
-# Directories potentially created on remote AFP share
-.AppleDB
-.AppleDesktop
-Network Trash Folder
-Temporary Items
-.apdisk
-
 # Windows
 # =========================
 
@@ -176,4 +139,3 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
-MyBitly.BLL/obj/Debug/MyBitly.BLL.pdb

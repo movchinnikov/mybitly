@@ -8,12 +8,12 @@
 
         public FakeParamsHelper(ParamsRaw paramsRaw)
         {
-            this._paramsRaw = paramsRaw;
+            _paramsRaw = paramsRaw;
         }
 
         public new string ShortDomen
         {
-            get { return this._paramsRaw.ShortDomen; }
+            get { return _paramsRaw.ShortDomen; }
         }
     }
 }
